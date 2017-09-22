@@ -71,10 +71,6 @@ input.typeahead:hoover {
     color: #bd7df9;
 }
 
-button.items-filtered-out {
-    color: #bd7df9;
-}
-
 .btn-secondary.items-filtered-out:hover {
     color: inherit;
     background-color: #bd7df9;
