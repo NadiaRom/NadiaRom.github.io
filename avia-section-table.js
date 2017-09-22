@@ -336,7 +336,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .enter()
             .append('rect')
             .attr('x', '10%')
-            .attr('y', '1.5px')
+            .attr('y', '0.5em')
             .attr('height', '40%')
             .attr('width', function (d) {
                 return totalWidthscale(d) + '%'
