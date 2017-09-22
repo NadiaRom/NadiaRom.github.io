@@ -324,7 +324,7 @@ d3.json('avia_table.json', function(error, dataset) {
             });
 
         var countryTotal = countryRows.append('div')
-            .attr('class', 'col country-total')
+            .attr('class', 'col-md-7 col-sm-6 col-xs-6 country-total')
             .append('svg')
             .attr('width', '100%')
             .attr('height', '3em');
@@ -362,7 +362,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 return computeCountryTotal(dat);
             })
             .attr('x', '10%')
-            .attr('y', '65%')
+            .attr('y', '70%')
             .text(function (d) {
                 return d[1] + ' рейсів / ' + d[0] + ' дозволено';
             });
