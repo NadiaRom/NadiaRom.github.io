@@ -51,10 +51,6 @@ h2 {
     border-bottom: solid #b1b1bb 0.5px;
 }
 
-input.typeahead:hoover {
-    background-color: #bd7df9;
-}
-
 #clear-search {
     text-decoration: none;
 }
@@ -70,6 +66,7 @@ input.typeahead:hoover {
 .airline-removed i {
     color: #bd7df9;
 }
+
 
 div#airline-labels-for-svg {
     padding-top: 2vh;
