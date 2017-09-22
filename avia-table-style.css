@@ -71,12 +71,6 @@ input.typeahead:hoover {
     color: #bd7df9;
 }
 
-.btn-secondary.items-filtered-out:hover {
-    color: inherit;
-    background-color: #bd7df9;
-    border-color: none;
-}
-
 div#airline-labels-for-svg {
     padding-top: 2vh;
     padding-bottom: 2vh;
@@ -95,10 +89,6 @@ div.tooltip-inner {
 
 .form-control {
     border: none !important;
-}
-
-.form-control:hoover {
-    background-color: #bd7df9;
 }
 
 #dropdownMenuButton, #airline-filter, .btn,  .btn-secondary{
