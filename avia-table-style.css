@@ -12,6 +12,10 @@ div#logo-buttons {
     padding: 5px;
 }
 
+.dropdown-toggle::after {
+    color: #bd7df9;
+}
+
 #intro {
     padding-top: 2.5vh;
 }
@@ -72,7 +76,7 @@ input.typeahead:hoover {
 }
 
 button.items-filtered-out {
-    background-color: #bd7df9;
+    color: #bd7df9;
 }
 
 .btn-secondary.items-filtered-out:hover {
