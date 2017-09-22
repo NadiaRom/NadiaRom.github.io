@@ -12,10 +12,6 @@ div#logo-buttons {
     padding: 5px;
 }
 
-.btn.dropdown-toggle::after {
-    : #bd7df9;
-}
-
 #intro {
     padding-top: 2.5vh;
 }
