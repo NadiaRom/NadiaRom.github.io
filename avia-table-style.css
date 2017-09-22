@@ -131,6 +131,10 @@ div.collapse.show {
     border-right: #084a44 solid 0.7px;
     border-bottom: #084a44 solid 0.7px;
     border-left: #084a44 solid 0.7px;
+    border-top-color: #084a44;
+    border-right-color: #084a44;
+    border-bottom-color: #084a44;
+    border-left-color: #084a44;
 }
 
 .treaty-table-col-main {
