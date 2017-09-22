@@ -327,7 +327,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('class', 'col country-total')
             .append('svg')
             .attr('width', '100%')
-            .attr('height', '8vh');
+            .attr('height', '3em');
 
         var countryTotalRect = countryTotal.selectAll('rect')
             .data(function (d) {
