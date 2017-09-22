@@ -72,7 +72,7 @@ input.typeahead:hoover {
 }
 
 button.items-filtered-out {
-    background-color: #bd7df9;
+    color: #bd7df9;
 }
 
 .btn-secondary.items-filtered-out:hover {
