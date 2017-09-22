@@ -12,8 +12,8 @@ div#logo-buttons {
     padding: 5px;
 }
 
-.dropdown-toggle::after {
-    color: #bd7df9;
+.btn.dropdown-toggle::after {
+    : #bd7df9;
 }
 
 #intro {
