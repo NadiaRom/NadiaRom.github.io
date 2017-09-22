@@ -44,8 +44,9 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     }
 
     mapmap = L.map('map-map', {
-        center: [27, 47],
-        zoom: 3
+        center: [31, 47],
+        zoom: 3,
+        scrollWheelZoom: false
     });
 
     mapmap.createPane('labels');
@@ -70,14 +71,6 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     var geoFeatures = geojson.features.filter(function (d) {  return d.properties.uacountry;  });
     var jsonLayer = L.geoJSON(geoFeatures, {  style: styleFunc})
         .addTo(mapmap);
-
-    var tooltip = L.tooltip({
-        target: jsonLayer,
-        map: mapmap,
-        html: "I'm a tooltip!",
-        padding: '4px 8px',
-        showDelay: 0
-    });
 
 
 });
