@@ -2,7 +2,7 @@
 
 d3.select('div#heading')
     .append('h1')
-    .text('Взліт дозволено!');
+    .text('Зліт дозволено!');
 
 d3.select('div#heading')
     .append('h2')
