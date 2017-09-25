@@ -1,6 +1,21 @@
 div#logo-buttons {
+    z-index: 4300;
+    background-color: white;
     width: 100%;
-    z-index: 4100;
+    position: fixed;
+    bottom: -1px;
+}
+
+@media (max-width: 575px) {
+    div#logo-buttons {
+        padding-bottom: 2px;
+    }
+}
+
+@media (min-width: 576px) {
+    div#logo-buttons {
+        padding-bottom: 4px;
+    }
 }
 
 .fa-twitter, .fa-facebook {
@@ -9,11 +24,6 @@ div#logo-buttons {
     cursor: pointer;
     float: right;
     margin: 5px 10px 0 0;
-    padding: 5px;
-}
-
-.dropdown-toggle::after {
-    color: #bd7df9;
 }
 
 #intro {
@@ -29,9 +39,10 @@ div#logo-buttons {
 }
 
 h1 {
-    color: #6e016c;
+    color: #4f3c60;
     line-height: 1.5em;
 }
+
 h2 {
     color: #323335;
     line-height: 1.4em;
@@ -41,9 +52,9 @@ h2 {
     font-size: 18px;
 }
 
-#map-map {
+#map {
     width: 100vw;
-    height: 62vh;
+    height: 44vh;
 }
 
 #table-header {
@@ -52,15 +63,17 @@ h2 {
     top: -1px;
     z-index: 4200 !important;
     background-color: white;
-    border-bottom: solid #b1b1bb 0.5px;
-}
-
-input.typeahead:hoover {
-    background-color: #bd7df9;
+    border-bottom: solid #a5aab0 0.5px;
 }
 
 #clear-search {
     text-decoration: none;
+}
+
+#clear-search i {
+    font-size: 1em;
+    padding: 0;
+    margin: 0;
 }
 
 .dropdown-item i {
@@ -75,15 +88,6 @@ input.typeahead:hoover {
     color: #bd7df9;
 }
 
-button.items-filtered-out {
-    background-color: #bd7df9;
-}
-
-.btn-secondary.items-filtered-out:hover {
-    color: inherit;
-    background-color: #bd7df9;
-    border-color: none;
-}
 
 div#airline-labels-for-svg {
     padding-top: 2vh;
@@ -97,6 +101,18 @@ div.tooltip-inner {
     color: #303134;
 }
 
+p.tooltip-country {
+    font-size: 1em !important;
+}
+
+.typeahead {
+    font-size: 1em !important;
+}
+
+#dropdownMenuButton {
+    font-size: 1em !important;
+}
+
 .tt-menu {
     display: none !important;
 }
@@ -105,13 +121,13 @@ div.tooltip-inner {
     border: none !important;
 }
 
-.form-control:hoover {
-    background-color: #bd7df9;
-}
-
 #dropdownMenuButton, #airline-filter, .btn,  .btn-secondary{
     border: none !important;
     color: #73757a;
+}
+
+.dropdown-toggle.btn.btn-secondary::after {
+    color: #bd7df9;
 }
 
 #clear-search i {
@@ -124,9 +140,24 @@ div.tooltip-inner {
     display: none;
 }
 
+@media (max-width: 575px) {
+    div.country-profile-row > div.country-name {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 575px) {
+    nav {
+        font-size: 0.8em;
+    }
+}
+
+
 div.country-profile-row {
     padding-top: 2vh;
     padding-bottom: 1vh;
+    padding-left: 2em !important;
+    padding-right: 2em !important;
 }
 
 div.country-profile-row svg {
@@ -138,20 +169,30 @@ div.country-profile-row svg {
 .permissions-heading, .treaty-heading {
     padding-top: 2vh;
     padding-bottom: 1.5vh;
-    color: #6e016c;
+    color: #4f3c60;
 }
 
-div.collapse.show {
-    padding-left: 3vw !important;
-    padding-right: 3vw !important;
-    padding-bottom: 4vh !important;
-}
+/*div.collapse {*/
+    /*padding-left: 3vw !important;*/
+    /*padding-right: 3vw !important;*/
+    /*padding-bottom: 4vh !important;*/
+/*}*/
 
 .card-open {
     border-top: #084a44 solid 0.7px;
     border-right: #084a44 solid 0.7px;
     border-bottom: #084a44 solid 0.7px;
     border-left: #084a44 solid 0.7px;
+    padding-top: 2vh;
+    padding-bottom: 1vh;
+}
+
+.country-name {
+    color: #4f3c60;
+}
+
+.card-open .country-name {
+    font-weight: 600;
 }
 
 .treaty-table-col-main {
@@ -194,6 +235,11 @@ span.limit-figure {
 .unlimited-limit {
     color: #084a44;
     font-style: italic;
+}
+
+div.country-total {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
 }
 
 /*SVG styles*/
@@ -245,7 +291,7 @@ text.route-header {
 
 .frequency-axis-x path, line {
     stroke: #57595c;
-    stroke-width: 0.6px;
+    stroke-width: 0.5px;
 }
 
 .permission rect.permission {
@@ -261,17 +307,7 @@ text.route-header {
 }
 
 text.flights-per-week-lab {
-    fill: #690167;
-    font-size: 0.8vh;
+    fill: #4f3c60;
+    font-size: 0.5em;
     font-style: italic;
-}
-
-.treaty svg text.label {
-    fill: #0F5C52;
-    dominant-baseline: middle;
-    font-size: 30%;
-}
-
-.country-routes-diagram circle {
-    fill: #1d1e1f;
 }

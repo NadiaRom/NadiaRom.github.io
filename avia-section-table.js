@@ -137,7 +137,8 @@ d3.json('avia_table.json', function(error, dataset) {
             },
             {
                 name: 'country_search',
-                source: countryEngine
+                source: countryEngine,
+                autoselect: true
             }
         )
     });
@@ -149,7 +150,21 @@ d3.json('avia_table.json', function(error, dataset) {
 
         d3.selectAll('div.country-profile-row:not(#' + selected_country_id + ')')
             .classed('hidden-country', true);
-        //$('body').scrollTo($('div.country-name:contains("' + val + '")'));
+
+        d3.selectAll('div#' + selected_country_id)
+            .classed('hidden-country', false);
+
+        $('body').scrollTo($('nav#table-header'), {
+            duration: 1000
+        });
+        $('.typeahead').typeahead('val', '');
+    });
+
+    $('.typeahead').on('keyup', function(e) {
+        if(e.which == 13) {
+            $(".tt-suggestion:first-child").click();
+            $('.typeahead').typeahead('val', '');
+        }
     });
 
     // Clean form button
@@ -293,7 +308,7 @@ d3.json('avia_table.json', function(error, dataset) {
     };
 
     var totalWidthscale = d3.scaleLinear()
-        .domain([0, 250])
+        .domain([0, 240])
         .range([0, 100])
         .clamp(true);
 
@@ -314,7 +329,7 @@ d3.json('avia_table.json', function(error, dataset) {
 
         // Country label
         var countryName = countryRows.append('div')
-            .attr('class', 'col-md-3 col-sm-4 col-xs-4 text-sm-right country-name')
+            .attr('class', 'col-md-3 col-sm-3 col-4 text-right country-name')
             .attr('id', function (d) {
                 return d.encountry;
             })
@@ -324,19 +339,19 @@ d3.json('avia_table.json', function(error, dataset) {
             });
 
         var countryTotal = countryRows.append('div')
-            .attr('class', 'col country-total')
+            .attr('class', 'col-md-8 col-sm-7 col-6 country-total')
             .append('svg')
             .attr('width', '100%')
-            .attr('height', '8vh');
+            .attr('height', '3em');
 
         var countryTotalRect = countryTotal.selectAll('rect')
             .data(function (d) {
-                return [250].concat(computeCountryTotal(d));
-            }) // 250 is convenient scale maximum
+                return [240].concat(computeCountryTotal(d));
+            }) // 240 is convenient scale maximum
             .enter()
             .append('rect')
             .attr('x', '10%')
-            .attr('y', '1.5px')
+            .attr('y', '0.2em')
             .attr('height', '40%')
             .attr('width', function (d) {
                 return totalWidthscale(d) + '%'
@@ -362,7 +377,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 return computeCountryTotal(dat);
             })
             .attr('x', '10%')
-            .attr('y', '50%')
+            .attr('y', '2em')
             .text(function (d) {
                 return d[1] + ' рейсів / ' + d[0] + ' дозволено';
             });
@@ -513,7 +528,7 @@ d3.json('avia_table.json', function(error, dataset) {
             })
             .enter()
             .append('div')
-            .attr('class', 'col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 permission')
+            .attr('class', 'col-xl-2 col-lg-2 col-md-3 col-sm-4 col-8 permission')
             .attr('id', function (d) {
                 return d.from_encity.replace(/[\.\s]/gi, '') + '__' + d.to_encity.replace(/[\.\s]/gi, '');
             });
@@ -666,13 +681,13 @@ d3.json('avia_table.json', function(error, dataset) {
             });
 
         var routes = treatyTableRow.append('div')
-            .attr('class', 'col-sm-4 col-xs-12 country-routes-diagram');
+            .attr('class', 'col-md-3 col-sm-4 col-12 country-routes-diagram');
 
         var treatyFlightLimits = treatyTableRow.append('div')
-            .attr('class', 'col-sm-4 col-xs-12 treaty-flight-limits');
+            .attr('class', 'col-md-3 col-sm-4 col-12 treaty-flight-limits');
 
         var treatyAirlineLimits = treatyTableRow.append('div')
-            .attr('class', 'col-sm-4 col-xs-12 treaty-airline-limits');
+            .attr('class', 'col-md-3 col-sm-4 col-12 treaty-airline-limits');
 
         // Table headers
         routes.append('h6')
@@ -872,7 +887,7 @@ d3.json('avia_table.json', function(error, dataset) {
     drawCard();
 
     // Change icon and add border to card on uncollapse
-    $('.collapse').on('shown.bs.collapse', function () {
+    $('.collapse').on('show.bs.collapse', function () {
         d3.select(this.parentNode)
             .classed('card-open', true);
 
@@ -881,7 +896,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('class', 'fa fa-chevron-up');
     });
 
-    $('.collapse').on('hidden.bs.collapse', function () {
+    $('.collapse').on('hide.bs.collapse', function () {
         d3.select(this.parentNode)
             .classed('card-open', false);
 

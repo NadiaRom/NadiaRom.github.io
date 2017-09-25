@@ -2,7 +2,7 @@
 
 d3.select('div#heading')
     .append('h1')
-    .text('Взліт дозволено!');
+    .text('Зліт дозволено!');
 
 d3.select('div#heading')
     .append('h2')
@@ -17,67 +17,125 @@ d3.select('div#heading')
 d3.json('country_treaties.geojson', function (error, geojson) {
     if (error) {  throw error;  }
 
+    var map = L.map('map', {
+        center: [50, 30],
+        zoom: 3,
+        scrollWheelZoom: false,
+        fadeAnimation: false
+    });
+
+
+    map.createPane('labels');
+    map.getPane('labels').style.zIndex = 450;
+    map.getPane('labels').style.pointerEvents = 'none';
+
+    // var tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/nnnade4ka/cj7yos0wa62x72rqhdpx6crt0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibm5uYWRlNGthIiwiYSI6ImNqMmIzNHUwajAwZ2YzM3M1dDg2NzF0OGIifQ.rKb2FgsvvDWoRv7Btz5jLQ',
+    //     {
+    //         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    //         maxZoom: 18,
+    //         pane: 'labels'
+    //     });
+
+    var CartoDB_PositronNoLabels = L.tileLayer.colorizr('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+            subdomains: 'abcd',
+            maxZoom: 12,
+            colorize: function (pixel) {
+                return {  a: 190  };
+            }
+        });
+
+    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png',
+        {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+            subdomains: 'abcd',
+            maxZoom: 12,
+            pane: 'labels'
+        });
+
     function styleFunc(feature) {
         var fill = '';
 
         if (feature.properties.encountry == 'Ukraine') {
-            fill = '#bd7df9';
+            fill = '#ca93fb';
         } else {
             switch (feature.properties.treaty_stage) {
                 case 'проект':
-                    fill = '#9dcebc';
+                    fill = '#92bbb2';
                     break;
                 case 'парафована':
-                    fill = '#5b9581';
+                    fill = '#6ea49a';
                     break;
                 case 'підписана':
-                    fill = '#469e8d';
+                    fill = '#488f83';
                     break;
                 case 'чинна':
                     fill = '#14796c';
             }
         }
-
         return {
-            fillColor: fill, color: '#323335', fillOpacity: 0.5, weight: 0.5
+            fillColor: fill,
+            color: '#323335',
+            weight: 0.5,
+            fillOpacity: 0.7
         };
     }
 
-    mapmap = L.map('map-map', {
-        center: [27, 47],
-        zoom: 3
+    function moveToCountry() {
+        // click to expand country card
+        $('div#' + this.feature.properties.encountry)
+            .find('.uncollapse-card a i')
+            .click();
+
+        d3.selectAll('div.country-profile-row:not(#' + this.feature.properties.encountry + ')')
+            .classed('hidden-country', true);
+
+        d3.select('div#' + this.feature.properties.encountry)
+            .classed('hidden-country', false);
+
+        $('body').scrollTo($('nav#table-header'), {
+            duration: 1000
+        });
+
+        $('.typeahead').typeahead('val', '');
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            click: moveToCountry
+        });
+    }
+
+    var jsonForeignLayer = L.geoJSON(geojson, {
+        filter: function (feature) {  return feature.properties.encountry != 'Ukraine';  },
+        style: styleFunc,
+        onEachFeature: onEachFeature
     });
 
-    mapmap.createPane('labels');
-    mapmap.getPane('labels').style.zIndex = 450;
-    mapmap.getPane('labels').style.pointerEvents = 'none';
+    jsonForeignLayer.bindTooltip(
+        function (e) {
+            return e.feature.properties.treaty_date == ''
+                ? '<p class="tooltip-country">' + e.feature.properties.uacountry + '<br/>' +
+                '<strong>Угода</strong>: ' + e.feature.properties.treaty_stage + '</p>'
+                : '<p class="tooltip-country">' + e.feature.properties.uacountry + '<br/>' +
+                '<strong>Угода</strong>: ' + e.feature.properties.treaty_stage + '<br/>' +
+                'від ' + e.feature.properties.treaty_date + '</p>'
+        },
+        {
+            sticky: true,
+            className: 'map-tooltip tooltip-inner'
+        }
+    );
 
-    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
+    var jsonUaLayer = L.geoJSON(geojson, {
+        filter: function (feature) {  return feature.properties.encountry == 'Ukraine';  },
+        style: styleFunc
     });
 
-    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-        subdomains: 'abcd',
-        maxZoom: 19,
-        pane: 'labels'
-    });
-
-    CartoDB_PositronOnlyLabels.addTo(mapmap);
-    CartoDB_PositronNoLabels.addTo(mapmap);
-    var geoFeatures = geojson.features.filter(function (d) {  return d.properties.uacountry;  });
-    var jsonLayer = L.geoJSON(geoFeatures, {  style: styleFunc})
-        .addTo(mapmap);
-
-    var tooltip = L.tooltip({
-        target: jsonLayer,
-        map: mapmap,
-        html: "I'm a tooltip!",
-        padding: '4px 8px',
-        showDelay: 0
-    });
-
+    jsonForeignLayer.addTo(map);
+    jsonUaLayer.addTo(map);
+    CartoDB_PositronOnlyLabels.addTo(map);
+    CartoDB_PositronNoLabels.addTo(map);
 
 });
