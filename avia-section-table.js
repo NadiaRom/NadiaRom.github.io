@@ -897,12 +897,15 @@ d3.json('avia_table.json', function(error, dataset) {
     });
 
     $('.collapse').on('hide.bs.collapse', function () {
+
         d3.select(this.parentNode)
             .classed('card-open', false);
 
         d3.select(this.parentNode)
             .select('a i')
             .attr('class', 'fa fa-chevron-down');
+
+        $('#clear-search').click();
     })
 
 
