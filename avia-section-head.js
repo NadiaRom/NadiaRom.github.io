@@ -21,7 +21,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
         center: [50, 30],
         zoom: 3,
         scrollWheelZoom: false,
-        fadeAnimation: false
+        maxBounds: [[-89, -179], [89, 179]]
     });
 
 
@@ -33,7 +33,8 @@ d3.json('country_treaties.geojson', function (error, geojson) {
         {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
             subdomains: 'abcd',
-            maxZoom: 12
+            maxZoom: 12,
+            minZoom: 2
         });
 
     var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png',
@@ -41,6 +42,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
             subdomains: 'abcd',
             maxZoom: 12,
+            minZoom: 2,
             pane: 'labels'
         });
 

@@ -353,6 +353,12 @@ text.flights-per-week-lab {
     color: white;
 }
 
+@media (max-width: 767px) {
+    #footer li {
+        display: none;
+    }
+}
+
 #footer a:hover, a.support-site {
     color: #FAA61A !important;
 }
