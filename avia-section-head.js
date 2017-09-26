@@ -29,13 +29,6 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     map.getPane('labels').style.zIndex = 450;
     map.getPane('labels').style.pointerEvents = 'none';
 
-    // var tileLayer = L.tileLayer('https://api.mapbox.com/styles/v1/nnnade4ka/cj7yos0wa62x72rqhdpx6crt0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibm5uYWRlNGthIiwiYSI6ImNqMmIzNHUwajAwZ2YzM3M1dDg2NzF0OGIifQ.rKb2FgsvvDWoRv7Btz5jLQ',
-    //     {
-    //         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    //         maxZoom: 18,
-    //         pane: 'labels'
-    //     });
-
     var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
         {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
