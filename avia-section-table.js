@@ -752,6 +752,11 @@ d3.json('avia_table.json', function(error, dataset) {
                 }
             });
 
+        var commentLine = treatyTableRow.filter(function (d) {  return d.comment != '';  })
+            .append('div')
+            .attr('class', 'col-12 treaty-comment')
+            .text(function (d) {  return d.comment;  });
+
     };
 
     //     // ---------- Route SVG ----------

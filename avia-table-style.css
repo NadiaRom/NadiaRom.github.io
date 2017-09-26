@@ -237,6 +237,13 @@ span.limit-figure {
     font-style: italic;
 }
 
+.treaty-comment {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #303134;
+    padding-bottom: 1em;
+}
+
 div.country-total {
     padding-right: 0 !important;
     padding-left: 0 !important;
