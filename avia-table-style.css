@@ -318,3 +318,57 @@ text.flights-per-week-lab {
     font-size: 0.5em;
     font-style: italic;
 }
+
+#footer {
+    z-index: 4500;
+    bottom: 0;
+    width: 100%;
+    background: #1c2124 none repeat scroll 0 0;
+    text-align: left;
+    font-size: 14px;
+    padding: 1.5em;
+    display: block;
+    margin-top: 50px;
+}
+
+#footer h4 {
+    font-size: 18px;
+    color: white;
+
+}
+
+#footer a {
+    text-decoration: none;
+    font-size: 0.7em;
+    color: white;
+}
+
+#footer a:hover, a.support-site {
+    color: #FAA61A !important;
+}
+
+.copying-info {
+    padding-top: 20px;
+    font-size: 0.7em;
+    line-height: 15px;
+    color: #888c91;
+}
+
+#thank-you-d3 {
+    padding-top: 20px;
+    color: #888c91;
+    font-size: 0.7em;
+    line-height: 15px;
+}
+
+#thank-you-d3 a {
+    text-decoration: none;
+    color: #888c91;
+    font-size: 1em !important;
+}
+
+#thank-you-d3 i {
+    color: crimson;
+}
+
+

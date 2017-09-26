@@ -36,14 +36,11 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     //         pane: 'labels'
     //     });
 
-    var CartoDB_PositronNoLabels = L.tileLayer.colorizr('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
+    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
         {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
             subdomains: 'abcd',
-            maxZoom: 12,
-            colorize: function (pixel) {
-                return {  a: 190  };
-            }
+            maxZoom: 12
         });
 
     var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png',
@@ -102,9 +99,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     }
 
     function onEachFeature(feature, layer) {
-        layer.on({
-            click: moveToCountry
-        });
+        layer.on({  click: moveToCountry  });
     }
 
     var jsonForeignLayer = L.geoJSON(geojson, {
@@ -116,10 +111,10 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     jsonForeignLayer.bindTooltip(
         function (e) {
             return e.feature.properties.treaty_date == ''
-                ? '<p class="tooltip-country">' + e.feature.properties.uacountry + '<br/>' +
-                '<strong>Угода</strong>: ' + e.feature.properties.treaty_stage + '</p>'
-                : '<p class="tooltip-country">' + e.feature.properties.uacountry + '<br/>' +
-                '<strong>Угода</strong>: ' + e.feature.properties.treaty_stage + '<br/>' +
+                ? '<p class="tooltip-country"><strong>' + e.feature.properties.uacountry + '</strong><br/>' +
+                'Угода: ' + e.feature.properties.treaty_stage + '</p>'
+                : '<p class="tooltip-country"><strong>' + e.feature.properties.uacountry + '</strong><br/>' +
+                'Угода: ' + e.feature.properties.treaty_stage + '<br/>' +
                 'від ' + e.feature.properties.treaty_date + '</p>'
         },
         {

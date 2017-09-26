@@ -726,7 +726,10 @@ d3.json('avia_table.json', function(error, dataset) {
             .html(function (d) {
                 var limit = d.limit == 999 ? 'немає' : d.limit;
                 if (d.scope) {
-                    return '<p>' + d.scope_text + '<br/>' +
+                    return limit == 'немає'
+                        ? '<p>' + d.scope_text + '<br/>' +
+                        '<span class="limit-figure">' + limit + '</span></p>'
+                        : '<p>' + d.scope_text + '<br/>' +
                         '<span class="limit-figure">' + limit + '</span>' + ' р/т' + '</p>';
 
                 } else {
