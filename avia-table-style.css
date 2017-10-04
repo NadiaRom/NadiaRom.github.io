@@ -54,7 +54,7 @@ h2 {
 
 #map {
     width: 100%;
-    height: 44vh;
+    height: 50vh;
 }
 
 #table-header {
@@ -63,6 +63,7 @@ h2 {
     top: -1px;
     z-index: 4200 !important;
     background-color: white;
+    padding-bottom: 1px;
     border-bottom: solid #a5aab0 0.5px;
 }
 
@@ -99,6 +100,8 @@ div.tooltip-inner {
     opacity: 1;
     font-size: 85%;
     color: #303134;
+    white-space: pre-wrap;
+    text-align: left
 }
 
 p.tooltip-country {
@@ -126,7 +129,7 @@ p.tooltip-country {
     color: #73757a;
 }
 
-.dropdown-toggle.btn.btn-secondary::after {
+#dropdownMenuButton::after {
     color: #bd7df9;
 }
 
@@ -180,6 +183,7 @@ div.country-profile-row svg {
     padding-top: 2vh;
     padding-bottom: 1.5vh;
     color: #4f3c60;
+    font-size: 0.9em;
 }
 
 /*div.collapse {*/
@@ -212,19 +216,31 @@ div.country-profile-row svg {
 div.treaty-table-col-main {
     padding-top: 3vh;
 }
+div.treaty-table-row > div {
+    padding-right: 1em;
+}
 
 .limit-heading {
     font-weight: normal;
     color: #1d1e1f;
-}
-
-.country-routes-diagram p {
-    padding-left: 2vh;
+    padding-bottom: 1em;
 }
 
 p.ua-points {
     color: #084a44;
     font-weight: 500;
+    font-size: 0.85em;
+    margin-bottom: 0.75em
+}
+
+p.foreign-points {
+    font-size: 0.85em;
+    padding-top: 0;
+    margin-bottom: 0.5em
+}
+
+p.limits-val {
+    font-size: 0.8em;
 }
 
 .foreign-points i {
@@ -232,19 +248,17 @@ p.ua-points {
     font-weight: 400;
 }
 
-.treaty-table-col-main p {
-    font-size: 14px;
-}
 
 span.limit-figure {
     color: #084a44;
-    font-size: 16px;
+    font-size: 1.5em;
     font-weight: 600;
 }
 
-.unlimited-limit {
+.unlimited-limit, .unlimited-points {
     color: #084a44;
     font-style: italic;
+    font-size: 0.8em;
 }
 
 .treaty-comment {
@@ -280,11 +294,15 @@ rect.blank-rect {
     fill: none;
 }
 
-
-
-/*div.permissions svg {*/
-    /*overflow: visible;*/
-/*}*/
+span.flight-codes {
+    color: #0F5C52;
+    background-color: #f0f0f0;
+    font-weight: 600;
+    font-size: 1.1em;
+    line-height: 1.5em;
+    letter-spacing: 0.15em;
+    font-family: monospace
+}
 
 text.route-header {
     color: #1d1e1f;
@@ -295,6 +313,10 @@ text.route-header {
 .airlines-axis-y text {
     fill: #4c4d51;
     font-size: 60%;
+}
+
+.airlines-axis-y text.no-flights-airline-lab {
+    fill: #b8bfc5;
 }
 
 .airlines-axis-y path {
