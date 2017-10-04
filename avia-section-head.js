@@ -80,14 +80,14 @@ d3.json('country_treaties.geojson', function (error, geojson) {
             .find('.uncollapse-card a i')
             .click();
 
-        d3.selectAll('div.country-profile-row:not(#' + this.feature.properties.encountry + ')')
-            .classed('hidden-country', true);
-
-        d3.select('div#' + this.feature.properties.encountry)
-            .classed('hidden-country', false);
-
         $('body').scrollTo($('nav#table-header'), {
-            duration: 1000
+            duration: 440
+        });
+
+        $('body').scrollTo($('div#' + this.feature.properties.encountry), {
+            offset: -$('nav#table-header').height() - 2,
+            duration: 0,
+            easing: 'linear'
         });
 
         $('.typeahead').typeahead('val', '');
