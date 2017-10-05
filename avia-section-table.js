@@ -475,7 +475,6 @@ d3.json('avia_table.json', function(error, dataset) {
             })
             .append('i')
             .attr('class', 'fa fa-chevron-down')
-            .style('color', '#084a44')
             .style('font-size', '2.4vh')
             .style('font-weight', 'lighter');
 
@@ -877,14 +876,24 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('title', 'необмежено');
 
 
-        // Change icon and add border to card on uncollapse
+        // uncollapse previously selected
         $('.collapse').on('show.bs.collapse', function () {
+            $('.card-open div.collapse').collapse('hide');
+        });
+        // Change icon and add border to card on uncollapse
+        $('.collapse').on('shown.bs.collapse', function () {
             d3.select(this.parentNode)
-                .classed('card-open', true);
+                .classed('card-open', true)
+                .classed('already-viewed', true);
 
             d3.select(this.parentNode)
                 .select('a i')
                 .attr('class', 'fa fa-chevron-up');
+
+            $('body').scrollTo($(this.parentNode), {
+                offset: -$('nav#table-header').height() - 2,
+                duration: 750
+            });
         });
 
         $('.collapse').on('hide.bs.collapse', function () {

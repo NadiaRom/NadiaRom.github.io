@@ -203,10 +203,29 @@ div.country-profile-row svg {
 
 .country-name {
     color: #4f3c60;
+    font-weight: 400;
 }
 
 .card-open .country-name {
     font-weight: 600;
+}
+
+.uncollapse-card i.fa-chevron-down, .uncollapse-card i.fa-chevron-up {
+    color: #084a44;
+}
+
+.already-viewed .country-name {
+    font-weight: normal;
+    opacity: 0.75;
+}
+
+.already-viewed .uncollapse-card i.fa-chevron-down, .already-viewed .uncollapse-card i.fa-chevron-up {
+    opacity: 0.75;
+}
+
+.already-viewed .country-total rect, .already-viewed .country-total text{
+    fill-opacity: 0.75;
+    stroke-opacity: 0.75;
 }
 
 .treaty-table-col-main {

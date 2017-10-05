@@ -75,22 +75,24 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     }
 
     function moveToCountry() {
-        // click to expand country card
-        $('div#' + this.feature.properties.encountry)
-            .find('.uncollapse-card a i')
-            .click();
+        if (this.feature.properties.encountry !== 'Russia') {
+            // click to expand country card
+            $('div#' + this.feature.properties.encountry)
+                .find('.uncollapse-card a i')
+                .click();
 
-        $('body').scrollTo($('nav#table-header'), {
-            duration: 440
-        });
+            $('body').scrollTo($('nav#table-header'), {
+                duration: 440
+            });
 
-        $('body').scrollTo($('div#' + this.feature.properties.encountry), {
-            offset: -$('nav#table-header').height() - 2,
-            duration: 0,
-            easing: 'linear'
-        });
+            $('body').scrollTo($('div#' + this.feature.properties.encountry), {
+                offset: -$('nav#table-header').height() - 2,
+                duration: 0,
+                easing: 'linear'
+            });
 
-        $('.typeahead').typeahead('val', '');
+            $('.typeahead').typeahead('val', '');
+        }
     }
 
     function onEachFeature(feature, layer) {
