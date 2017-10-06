@@ -1,3 +1,40 @@
+body {
+    font-family: Open Sans, sans-serif;
+    color: #1d1e1f;
+}
+
+h1 {
+    font-size: 3em;
+    padding-bottom: 0.25em;
+    padding-top: 1em;
+    color: #4f3c60;
+    font-weight: 800;
+}
+
+h2 {
+    line-height: 1.75em;
+    font-weight: normal;
+    padding-bottom: 1.75em;
+    font-size: 1em;
+}
+
+p.stressed-paragraph {
+    color: #4f3c60;
+    line-height: 1em !important;
+    font-size: 1em !important;
+    font-weight: 800;
+    margin-bottom: 1em;
+}
+
+article#instructions p {
+    font-size: 0.75em;
+    line-height: 2em;
+}
+
+article#instructions p em {
+    font-family: monospace, monospace;
+}
+
 div#logo-buttons {
     z-index: 4300;
     background-color: white;
@@ -26,30 +63,12 @@ div#logo-buttons {
     margin: 5px 10px 0 0;
 }
 
-#intro {
-    padding-top: 2.5vh;
-}
-
 .no-right-gutter > [class*='col-'] {
     padding-right:0 !important;
 }
 
 .no-left-gutter > [class*='col-'] {
     padding-left:0 !important;
-}
-
-h1 {
-    color: #4f3c60;
-    line-height: 1.5em;
-}
-
-h2 {
-    color: #323335;
-    line-height: 1.4em;
-    font-weight: normal;
-    padding-top: 1.8vw;
-    padding-bottom: 1vw;
-    font-size: 18px;
 }
 
 #map {
@@ -64,7 +83,7 @@ h2 {
     z-index: 4200 !important;
     background-color: white;
     padding-bottom: 1px;
-    border-bottom: solid #a5aab0 0.5px;
+    border-bottom: solid #a5aab0 0.22px;
 }
 
 #clear-search {
@@ -105,15 +124,21 @@ div.tooltip-inner {
 }
 
 p.tooltip-country {
-    font-size: 1em !important;
+    font-family: monospace, monospace;
+    width: 8em;
+    height: auto;
+    margin-bottom: 0.25em;
 }
 
 .typeahead {
     font-size: 1em !important;
+    text-align: right;
+    font-family: monospace, monospace;
 }
 
 #dropdownMenuButton {
     font-size: 1em !important;
+    font-family: monospace, monospace;
 }
 
 .tt-menu {
@@ -180,17 +205,13 @@ div.country-profile-row svg {
 }
 
 .permissions-heading, .treaty-heading {
-    padding-top: 2vh;
-    padding-bottom: 1.5vh;
+    padding-top: 1em;
+    padding-bottom: 1.25em;
     color: #4f3c60;
     font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
 }
-
-/*div.collapse {*/
-    /*padding-left: 3vw !important;*/
-    /*padding-right: 3vw !important;*/
-    /*padding-bottom: 4vh !important;*/
-/*}*/
 
 .card-open {
     border-top: #084a44 solid 0.7px;
@@ -202,16 +223,17 @@ div.country-profile-row svg {
 }
 
 .country-name {
-    color: #4f3c60;
     font-weight: 400;
+    font-size: 1em;
 }
 
 .card-open .country-name {
-    font-weight: 600;
+    font-weight: 600 !important;
 }
 
 .uncollapse-card i.fa-chevron-down, .uncollapse-card i.fa-chevron-up {
-    color: #084a44;
+    color: #4f3c60;
+    font-size: 0.9em;
 }
 
 .already-viewed .country-name {
@@ -228,32 +250,30 @@ div.country-profile-row svg {
     stroke-opacity: 0.75;
 }
 
-.treaty-table-col-main {
-    border-bottom: #14796c dotted 0.6px;
-}
-
 div.treaty-table-col-main {
-    padding-top: 3vh;
+    border-bottom: #14796c dotted 0.6px;
+    margin-bottom: 1.5em;
 }
 div.treaty-table-row > div {
     padding-right: 1em;
 }
 
 .limit-heading {
+    font-size: 0.9em;
     font-weight: normal;
     color: #1d1e1f;
-    padding-bottom: 1em;
+    padding-bottom: 0;
 }
 
 p.ua-points {
     color: #084a44;
     font-weight: 500;
-    font-size: 0.85em;
+    font-size: 0.8em;
     margin-bottom: 0.75em
 }
 
 p.foreign-points {
-    font-size: 0.85em;
+    font-size: 0.8em;
     padding-top: 0;
     margin-bottom: 0.5em
 }
@@ -277,7 +297,7 @@ span.limit-figure {
 .unlimited-limit, .unlimited-points {
     color: #084a44;
     font-style: italic;
-    font-size: 0.8em;
+    font-size: 0.75em;
 }
 
 .treaty-comment {
@@ -294,18 +314,26 @@ div.country-total {
 
 /*SVG styles*/
 .country-total text {
+    fill: #4f3c60;
     alignment-baseline: hanging;
 }
 
+rect.total-country-frequency.flight {
+    stroke: none;
+}
+
 rect.permission {
-    stroke: #0F5C52;
+    stroke: #03885e;
+    /*stroke: #0F5C52;*/
     stroke-width: 1.3px;
     fill: none;
 }
 
 rect.flight {
-    fill: #0F5C52;
-    stroke: #0F5C52;
+    fill: #03885e;
+    stroke: #03885e;
+    /*fill: #0F5C52;*/
+    /*stroke: #0F5C52;*/
     stroke-width: 1.3px;
 }
 
@@ -317,16 +345,25 @@ span.flight-codes {
     color: #0F5C52;
     background-color: #f0f0f0;
     font-weight: 600;
+    font-weight: 600;
     font-size: 1.1em;
     line-height: 1.5em;
     letter-spacing: 0.15em;
     font-family: monospace
 }
 
-text.route-header {
+div.permission {
+    margin-bottom: 1em;
+    padding-right: 10%;
+}
+
+p.route-header {
     color: #1d1e1f;
-    font-size: 47%;
+    font-size: 0.75em;
     font-weight: 600;
+    padding-left: 23%;
+    margin-bottom: 0;
+    white-space: pre-line;
 }
 
 .airlines-axis-y text {
@@ -353,21 +390,21 @@ text.route-header {
 }
 
 .permission rect.permission {
-    stroke: #14796C;
+    stroke: #03885e;
     stroke-width: 1px;
     fill: white;
 }
 
 .permission rect.flight {
-    fill: #14796C;
-    stroke: #14796C;
+    fill: #03885e;
+    stroke: #03885e;
     stroke-width: 1px;
 }
 
 text.flights-per-week-lab {
     fill: #4f3c60;
-    font-size: 0.5em;
-    font-style: italic;
+    font-size: 0.75em;
+    font-variant: all-petite-caps;
 }
 
 #footer {
@@ -428,4 +465,7 @@ text.flights-per-week-lab {
     color: crimson;
 }
 
-
+#easter-egg-fr {
+    position: fixed;
+    bottom: 50%;
+}

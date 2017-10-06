@@ -80,6 +80,13 @@ d3.json('avia_table.json', function(error, dataset) {
         return d.icao_iata !== '_';
     });
 
+    // sort - change airline_icao_iata and airline_names so that they match amount of permissions
+    airline_names = [], airline_icao_iata = [];
+    airlines_data.map(function (a) {
+        airline_names.push(a.airline_name);
+        airline_icao_iata.push(a.icao_iata);
+    });
+
     var dataFilterAirline = function (dset) {
 
         var selectedAirlines = [];
@@ -119,7 +126,7 @@ d3.json('avia_table.json', function(error, dataset) {
         .attr('spellcheck', 'true')
         .attr('autocomplete', 'off')
         .attr('maxlength', 150)
-        .attr('placeholder', 'Знайти країну');
+        .attr('placeholder', 'Знайти країну → ');
 
     var countryIds = [];
 
@@ -475,8 +482,7 @@ d3.json('avia_table.json', function(error, dataset) {
             })
             .append('i')
             .attr('class', 'fa fa-chevron-down')
-            .style('font-size', '2.4vh')
-            .style('font-weight', 'lighter');
+            .style('font-weight', '200');
 
         countryRows.append('div')
             .attr('class', 'w-100');
@@ -510,7 +516,8 @@ d3.json('avia_table.json', function(error, dataset) {
         // Route permissions heading
         routePermissionsRow.append('div')
             .attr('class', 'col-12 permissions-heading')
-            .html('<strong>Надані права на експлуатацію повітряних ліній</strong>,<br/><em>рейсів на тиждень</em>');
+            .html('Надані права на експлуатацію повітряних ліній,<br/>' +
+                '<span style="font-weight: 200; font-variant: all-petite-caps">рейсів на тиждень</span>');
 
         // ----- Draw small multiples of permissions. Include only selected airlines meet within country -----
 
@@ -521,8 +528,6 @@ d3.json('avia_table.json', function(error, dataset) {
                 selected_airlines.push(a.icao_iata.split('_')[0]);
             }
         });
-
-        var xPaddingPerm = 20;
 
         // Data for every chart inside chart's <div>, only airlines within country and selected ones
         // In case some airlines are selected, all cities occupied by other airlines will be removed
@@ -545,6 +550,20 @@ d3.json('avia_table.json', function(error, dataset) {
                     });
                 });
 
+                // sort rights by total airline amount of permissions
+                country_airlines = country_airlines.sort(function (a, b) {
+                    var icaos = airline_icao_iata.map(function (codes) {
+                        return codes.split('_')[0];
+                    });
+                    return d3.ascending(
+                        icaos.indexOf(a),
+                        icaos.indexOf(b)
+                    );
+                });
+
+                // SVG height in em. 2 em for axis and padding
+                var svgHeight = country_airlines.length + 3;
+
                 permissions = permissions.sort(function (a, b) {
                     var totalRights = function (p) {
                         var total = [];
@@ -556,18 +575,18 @@ d3.json('avia_table.json', function(error, dataset) {
                     return d3.descending(totalRights(a), totalRights(b));
                 });
 
-
                 // D3 scales to attach x and y on-fly. **fly**, baby:)))
                 var xScalePerm = d3.scaleLinear()
                     .domain([0, 22])
-                    .range([xPaddingPerm, 100 - xPaddingPerm])
+                    .range([19, 98])
                     .clamp(true);
 
                 var yAirlineScalePoint = d3.scalePoint()
                     .domain(country_airlines)
-                    .range([xPaddingPerm, (100 - xPaddingPerm)]);
+                    .range([1, country_airlines.length * 10])
+                    .align(0);
 
-                // add scaled values to permission rights array
+                // add scaled values and svg height to permission rights array
                 permissions.map(function (p, i) {
                     p.rights.map(function (r, j) {
                         permissions[i].rights[j].y = yAirlineScalePoint(r.icao_airline);
@@ -588,28 +607,39 @@ d3.json('avia_table.json', function(error, dataset) {
                         permissions[i].axis_y_function = d3.axisLeft()
                             .scale(yAirlineScalePoint)
                             .tickSize(2);
-                    });
-                    permissions[i].rights = permissions[i].rights.sort(function (a, b) {
-                        return d3.ascending(
-                            airline_icao_iata.indexOf(a.icao_airline + '_' + a.iata_airline),
-                            airline_icao_iata.indexOf(b.icao_airline + '_' + b.iata_airline)
-                        );
+                        permissions[i]['svg_height'] = svgHeight;
                     });
                 });
+
                 // hooooooh, done:)
                 return permissions;
             })
             .enter()
             .append('div')
-            .attr('class', 'col-xl-2 col-lg-2 col-md-3 col-sm-4 col-8 permission')
+            .attr('class', 'col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 permission')
             .attr('id', function (d) {
                 return d.from_encity.replace(/[\.\s]/gi, '') + '__' + d.to_encity.replace(/[\.\s]/gi, '');
             });
 
+        // Route header
+        var routeHeaders = permissionDivs.append('p')
+            .attr('class', 'route-header')
+            .text(function (d) {  return d.from_city + ' – ' + d.to_city;  });
+
+        // fix shity long route names: Abracadabra-Smthland - Dgsgsgffdfhdhdrydrgrh
+        routeHeaders.filter(function () {
+            return this.textContent.length < 20;
+        })
+            .text(function () {
+                return '\n' + this.textContent;
+            });
+
         var permissionSVGs = permissionDivs.append('svg')
             .attr('width', '100%')
-            .attr('height', '100%')
-            .attr('viewBox', '0, 0, 100, 100');
+            // Count svg height
+            .attr('height', function (d) {  return d.svg_height + 'em';  })
+            .attr('viewBox', function (d) {  return '0, 0, 100, ' + d.svg_height * 10;  });
+            //.attr('viewBox', '0, 0, 100, 100');
         // .on('mouseover', function (d) {
         //     var selPath = '#' + d.from_encity + '__' + d.to_encity;
         //     var selFrom = 'text[enname=' + d.from_encity + ']';
@@ -634,7 +664,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .enter()
             .append('rect')
             .attr('class', 'permission')
-            .attr('x', xPaddingPerm)
+            .attr('x', 19)
             .attr('y', function (d) {
                 return d.y;
             })
@@ -650,7 +680,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .enter()
             .append('rect')
             .attr('class', 'flight')
-            .attr('x', xPaddingPerm)
+            .attr('x', 19)
             .attr('y', function (d) {
                 return d.y;
             })
@@ -666,7 +696,9 @@ d3.json('avia_table.json', function(error, dataset) {
                 d3.select(this)
                     .append('g')
                     .attr('class', 'frequency-axis-x')
-                    .attr('transform', 'translate(0, 90)')
+                    .attr('transform', function (d) {
+                        return 'translate(0, ' + (d.svg_height * 10 - 18) + ')';
+                    })
                     .call(svg.axis_x_function);
 
                 d3.select(this)
@@ -676,26 +708,20 @@ d3.json('avia_table.json', function(error, dataset) {
                     .call(svg.axis_y_function);
             });
 
-        // Route header
-        permissionSVGs.append('text')
-            .attr('class', 'route-header')
-            .attr('x', 3)
-            .attr('y', 13)
-            .text(function (d) {
-                return d.from_city + ' - ' + d.to_city
-            });
+
 
         // add flights-per-week label
-        d3.selectAll('div.country-profile-row div.permissions')
-            .each(function (div) {
-                d3.select(this)
-                    .select('svg')
-                    .append('text')
-                    .attr('class', 'flights-per-week-lab')
-                    .attr('x', 1)
-                    .attr('y', 100)
-                    .text('р/т');
-            });
+        permissionSVGs.filter(function (d) {
+            return $(this).closest('.permissions').find('svg').index(this) == 0;
+        })
+            .append('text')
+            .attr('class', 'flights-per-week-lab')
+            .attr('x', 1)
+            .attr('y', function (d) {
+                return d.svg_height * 10 - 9;
+            })
+            .text('р/т');
+
         // --- Airline ICAO tooltip
         d3.selectAll('.airlines-axis-y g.tick text')
             .attr('class', 'airline-icao-tooltipped')
@@ -715,20 +741,21 @@ d3.json('avia_table.json', function(error, dataset) {
 
         d3.selectAll('div.permissions rect')
             .classed('permission-bar-tooltipped', true)
-            .attr('title', function (d) {
-                return d.schedules
-                    ? 'до <strong>' + d.max_freq + '</strong> р/т,<br/>'
-                      + 'здійснюють <strong>' + d.schedules.freq + '</strong>:<br/>'
-                      + '<span class="flight-codes">' + d.schedules.flights + '</span>'
-                    : 'до <strong>' + d.max_freq + '</strong> р/т';
-            })
-            .attr('data-toggle', 'permission-bar-tooltipped')
-            .attr('data-placement', 'bottom')
+            .attr('data-toggle', 'easter-egg')
             .attr('data-html', true);
 
         // Flight right tooltip
         $(function () {
-            $('[data-toggle="permission-bar-tooltipped"]').tooltip()
+            $('.permission-bar-tooltipped').tooltip({
+                title: function () {
+                    return this.__data__.schedules
+                        ? 'до <strong>' + this.__data__.max_freq + '</strong> р/т,<br/>'
+                        + 'здійснюють <strong>' + this.__data__.schedules.freq + '</strong>:<br/>'
+                        + '<span class="flight-codes">' + this.__data__.schedules.flights + '</span>'
+                        : 'до <strong>' + this.__data__.max_freq + '</strong> р/т';
+                },
+                placement: 'bottom'
+            })
         });
 
         // Make airline label lighter, if there are no flights
@@ -751,7 +778,7 @@ d3.json('avia_table.json', function(error, dataset) {
 
         treatyConditionsRow.append('div')
             .attr('class', 'col-12 treaty-heading')
-            .html('<strong>Умови розподілу рейсів за міжнародною угодою</strong>');
+            .text('Умови розподілу рейсів за міжнародною угодою');
 
         var treatyTableRow = treatyConditionsRow.selectAll('div.treaty-table-col-main')
             .data(function (d) {
@@ -779,13 +806,13 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('class', 'col-md-4 col-sm-4 col-12 treaty-airline-limits');
 
         // Table headers
-        routes.append('h6')
+        routes.append('p')
             .attr('class', 'limit-heading')
             .text('Маршрути');
-        treatyFlightLimits.append('h6')
+        treatyFlightLimits.append('p')
             .attr('class', 'limit-heading')
             .text('Частота рейсів');
-        treatyAirlineLimits.append('h6')
+        treatyAirlineLimits.append('p')
             .attr('class', 'limit-heading')
             .text('Кількість авіакомпаній');
 
@@ -906,9 +933,23 @@ d3.json('avia_table.json', function(error, dataset) {
                 .attr('class', 'fa fa-chevron-down');
 
             $('#clear-search').click();
-        })
+        });
 
+        // Easter Egg
+        // d3.selectAll('div.permission rect.flight, div.permission rect.permission')
+        //     .filter(function (d) {  return d.schedules;  })
+        //     .on('dblclick', function (d) {
+        //         var frUrls = [];
+        //         d.schedules.flights.split(', ').map(function (f) {
+        //             frUrls.push('https://www.flightradar24.com/data/flights/' + d.iata_airline + f.slice(2).replace(/[a-zA-Z]+/, ''));
+        //         });
+        //         $(function () {
+        //             $('[data-toggle="easter-egg"]').popover({content: "myDearContent", title: 'MyTitle'});
+        //         });
+        //     });
     };
+
+
 
     //     // ---------- Route SVG ----------
     //     var routeSvg = routeDiagram.append('svg')
@@ -1042,7 +1083,7 @@ d3.json('avia_table.json', function(error, dataset) {
 
     drawCard();
 
-
+// var acceptEasterEgg = false;
 
 
 

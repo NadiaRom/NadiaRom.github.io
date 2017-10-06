@@ -1,18 +1,3 @@
-// ---------- Heading and lead --------------------
-
-d3.select('div#heading')
-    .append('h1')
-    .text('Зліт дозволено!');
-
-d3.select('div#heading')
-    .append('h2')
-    .html('Українські авіакомпанії можуть літати в країни, з якими уряд уклав угоду про регулярне повітряне сполучення. ' +
-        'Для компанія має отримати дозвіл від комісії Державіаслужби, в якому вказана максимальна частота рейсів за маршрутом.\n\n' +
-        'Відкриті дані Державної авіаційної служби показують куди складно літати та які країни користуються попитом серед авіакомпаній.\n\n' +
-        'Розклади рейсів проливають світло на те, як перевізники використовують права на регулярні рейси\n\n' +
-        '<em><small>Куди летимо? Виберіть країну на карті, або почніть друкувати у вікні пошуку<small></em>')
-    .style('white-space', 'pre-line');
-
 // ---------- Map ---------------------------------
 d3.json('country_treaties.geojson', function (error, geojson) {
     if (error) {  throw error;  }
@@ -54,21 +39,21 @@ d3.json('country_treaties.geojson', function (error, geojson) {
         } else {
             switch (feature.properties.treaty_stage) {
                 case 'проект':
-                    fill = '#92bbb2';
+                    fill = '#aadec4';
                     break;
                 case 'парафована':
-                    fill = '#6ea49a';
+                    fill = '#7ecda8';
                     break;
                 case 'підписана':
-                    fill = '#488f83';
+                    fill = '#6dc69e';
                     break;
                 case 'чинна':
-                    fill = '#14796c';
+                    fill = '#5bc195';
             }
         }
         return {
             fillColor: fill,
-            color: '#323335',
+            color: '#575a5d',
             weight: 0.5,
             fillOpacity: 0.7
         };
