@@ -454,7 +454,7 @@ d3.json('avia_table.json', function(error, dataset) {
         var countryTotal = countryTotalDiv.filter(function (d) {  return d[0] > 0;  })
             .append('svg')
             .attr('width', '100%')
-            .attr('height', '0.9rem');
+            .attr('height', '1em');
 
         var countryTotalRect = countryTotal.selectAll('rect')
             .data(function (d) {  return d;
@@ -463,7 +463,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .append('rect')
             .attr('x', 0)
             .attr('y', 0)
-            .attr('height', '100%')
+            .attr('height', '1em')
             .attr('width', function (d) {
                 return totalWidthscale(d) + '%'
             })
