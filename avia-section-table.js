@@ -3,30 +3,6 @@ d3.json('avia_table.json', function(error, dataset) {
         throw error;
     }
 
-    // Sort on airlines
-    var sortDset = function (dset) {
-        dset.sort(function (a, b) {
-            var a_total = [], b_total = [];
-            [a, b].map(function (d, i) {
-                d.conditions.map(function (c) {
-                    c.permissions.map(function (p) {
-                        p.rights.map(function (r) {
-                            if (i < 1) {
-                                a_total.push(+r.max_freq);
-                            } else {
-                                b_total.push(+r.max_freq);
-                            }
-                        })
-                    })
-                })
-            });
-
-            return d3.descending(d3.sum(a_total), d3.sum(b_total));
-        });
-        return dset;
-    };
-
-
     // Get list of all airlines
     var airline_names = [], airline_icao_iata = [], airlines_data = [];
 
@@ -46,7 +22,26 @@ d3.json('avia_table.json', function(error, dataset) {
         })
     });
     airline_names.map(function (d, i) {
-        airlines_data.push({'airline_name': d, 'icao_iata': airline_icao_iata[i]});
+        var aname_new = '';
+        switch (d) {
+            case 'МАУ':
+                aname_new = 'Міжнародні авіалінії України';
+                break;
+            case 'ЯнЕір ЛТД':
+                aname_new = 'YanAir';
+                break;
+            case 'АТЛАСДЖЕТ УКРАЇНА':
+                aname_new = 'AtlasGlobal UA';
+                break;
+            case 'РОЗА ВІТРІВ':
+                aname_new = 'WindRose';
+                break;
+            case 'ДАРТ':
+                aname_new = 'DART';
+                break;
+            default: aname_new = d;
+        }
+        airlines_data.push({'airline_name': d, 'icao_iata': airline_icao_iata[i], 'airline_label': aname_new});
     });
     airlines_data.map(function (aline, i) {
         var total_flights = [], total_rights = [];
@@ -83,7 +78,7 @@ d3.json('avia_table.json', function(error, dataset) {
     // sort - change airline_icao_iata and airline_names so that they match amount of permissions
     airline_names = [], airline_icao_iata = [];
     airlines_data.map(function (a) {
-        airline_names.push(a.airline_name);
+        airline_names.push(a.airline_label);
         airline_icao_iata.push(a.icao_iata);
     });
 
@@ -113,15 +108,12 @@ d3.json('avia_table.json', function(error, dataset) {
         return filtered_dset;
     };
 
-    var dataset_selected_airlines = JSON.parse(JSON.stringify(dataset));
-    dataset_selected_airlines = sortDset(dataset_selected_airlines);
-
     // ---------- sticky header ----------------------------------------------------------------------------------------
 
     d3.select('#table-header div#search-form')
         .append('input')
         .attr('type', 'text')
-        .attr('class', 'typeahead tt-query form-control')
+        .attr('class', 'typeahead tt-query')
         .attr('id', 'country-input')
         .attr('spellcheck', 'true')
         .attr('autocomplete', 'off')
@@ -155,21 +147,6 @@ d3.json('avia_table.json', function(error, dataset) {
         // click to expand country card
         $('div.country-name:contains("' + val + '")').parent().find('.uncollapse-card a i').click();
 
-        // d3.selectAll('div.country-profile-row:not(#' + selected_country_id + ')')
-        //     .classed('hidden-country', true);
-        //
-        // d3.selectAll('div#' + selected_country_id)
-        //     .classed('hidden-country', false);
-
-        $('body').scrollTo($('div#' + selected_country_id), {
-            offset: -$('nav#table-header').height() - 2,
-            duration: 0,
-            easing: 'linear'
-        });
-
-        // $('body').scrollTo($('nav#table-header'), {
-        //     duration: 1000
-        // });
         $('.typeahead').typeahead('val', '');
     });
 
@@ -180,34 +157,13 @@ d3.json('avia_table.json', function(error, dataset) {
         }
     });
 
-    // Clean form button
-    // d3.select('#table-header div#search-form')
-    //     .append('button')
-    //     .attr('id', 'clear-search')
-    //     .append('i')
-    //     .attr('class', 'fa fa-times-circle');
-
-    $('button#clear-search').click(function () {
-        $('.typeahead').typeahead('val', '');
-        // d3.selectAll('.row.country-profile-row')
-        //     .classed('hidden-country', false);
-        d3.selectAll('.country-profile-row.card-open').each(function () {
-            d3.select(this).select('div.uncollapse-card a').node().click()
-        });
-        $('body').scrollTo($('div.country-profile-row:first-of-type'), {
-            offset: -$('nav#table-header').height() - 2,
-            duration: 0,
-            easing: 'linear'
-        });
-    });
-
-
     // ----- Dropdown airlines -----
 
     airlinesFilter = d3.select('div#avia-dropdown-items');
 
     var select_all_airlines = {
         'airline_name': 'ВСІ',
+        'airline_label': 'ВСІ',
         'airline_removed': false,
         'icao_iata': airline_icao_iata
     };
@@ -217,7 +173,7 @@ d3.json('avia_table.json', function(error, dataset) {
         .enter()
         .append('label')
         .attr('class', function (d) {
-            var classes = ['dropdown-item'];
+            var classes = ['menu-airline', 'pl-sm-3', 'pr-sm-3 pr-1', 'mt-0', 'mr-0', 'mb-0', 'ml-0'];
             if (d.airline_removed) {
                 classes.push('airline-removed');
             }
@@ -231,12 +187,12 @@ d3.json('avia_table.json', function(error, dataset) {
         .html(
             function (d) {
                 return '<i class="fa fa-plane airline-check-tick"></i>' + '  ' +
-                    d.airline_name +
+                    d.airline_label +
                     '<input class="airline-checkbox custom-control-input" type="checkbox" checked autocomplete="off">';
             }
         );
 
-    d3.selectAll('#avia-dropdown-items label.dropdown-item')
+    d3.selectAll('#avia-dropdown-items label.menu-airline')
         .filter(function (d) {
             return d.airline_name !== 'ВСІ';
         })
@@ -244,11 +200,10 @@ d3.json('avia_table.json', function(error, dataset) {
             return d.icao_iata.split('_')[0];
         });
 
-    var updateFilterButtonText = function (lab) {
-        d3.select('button#dropdownMenuButton').text(lab);
-    };
     // On check box hide elements with specific attribute "airline", which equals ICAO_IATA
     $('input.airline-checkbox').change(function () {
+        $('.card-open .collapse').collapse('hide');
+
         // Get ICAO & IATA codes of checked airline in airline_data
         var airline_id = this.parentNode.__data__.icao_iata;
         // get index of selected airline in iarline_data
@@ -268,8 +223,8 @@ d3.json('avia_table.json', function(error, dataset) {
             airlines_data.map(function (a, i) {
                 airlines_data[i].airline_removed = false;
             });
-            // paint all icons to pink-selected
-            d3.selectAll('.dropdown-item').classed('airline-removed', false);
+            // paint all icons to selected
+            d3.selectAll('.menu-airline').classed('airline-removed', false);
         } else {
             // if at least one airline is already unselected
             if (airlines_data.some(function (a) {
@@ -293,27 +248,99 @@ d3.json('avia_table.json', function(error, dataset) {
             }
         }
 
-        dataset_selected_airlines = dataFilterAirline(JSON.parse(JSON.stringify(dataset)));
-        dataset_selected_airlines = sortDset(dataset_selected_airlines);
-        d3.selectAll('div.row.country-profile-row').remove();
-        drawTable();
-        drawCard();
+        var selected_airlines = airlines_data.filter(function (a) {
+            return a.airline_removed === false;
+        });
+        var selected_codes = [];
+        var selected_names = [];
+        selected_airlines.map(function (a) {
+            selected_codes.push(a.icao_iata.split('_')[0]);
+            selected_names.push(a.airline_label);
+        });
+        selected_codes = selected_codes.join(', ');
+        selected_names = selected_names.join(', ');
+
+        // update values in total
+        $('.country-profile-row').each(function () {
+            if (typeof airline_id === 'object') {
+                $(this).show();
+            } else {
+                var selected_fly = this.__data__.conditions.some(function (c) {
+                    return c.permissions.some(function (p) {
+                        return p.rights.some(function (r) {
+                            return selected_codes.split(', ').indexOf(r.icao_airline) > -1;
+                        });
+                    });
+                });
+                if (!selected_fly) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            }
+        });
+
+        $('.country-total:visible').each(function (i) {
+            var cdata = JSON.parse(JSON.stringify($(this).closest('.country-profile-row').get(0).__data__));
+            var totalGiven = [], totalFlights = [];
+            cdata.conditions.map(function (c) {
+                c.permissions.map(function (p) {
+                    p.rights.map(function (r) {
+                        if (selected_codes.split(', ').indexOf(r.icao_airline) > -1) {
+                            totalGiven.push(+r.max_freq);
+                            if (r.schedules) {
+                                totalFlights.push(+r.schedules.freq)
+                            }
+                        }
+                    });
+                });
+            });
+
+            totalGiven = d3.sum(totalGiven);
+            totalFlights = d3.sum(totalFlights);
+
+            var newCTotal = d3.select(this)
+                .datum([totalGiven, totalFlights])
+                .enter();
+
+            d3.select(this).selectAll('rect')
+                .transition()
+                .duration(500)
+                .delay(400)
+                .attr('width', function () {
+                    return d3.select(this).classed('permission')
+                        ? totalWidthscale(totalGiven) + '%'
+                        : totalWidthscale(totalFlights) + '%'
+                });
+
+            d3.select(this).select('p')
+                .text(function (d) {
+                    return d[1] > 0
+                        ? d[1] + ' за розкладами / видано прав на ' + d[0] + ' р/т'
+                        : 'видано прав на ' + d[0] + ' р/т';
+                });
+
+        });
+        $('div.country-profile-row:visible').sort(function (a, b) {
+            return d3.descending(
+                $(a).find('.country-total').get(0).__data__[0],
+                $(b).find('.country-total').get(0).__data__[0]
+            );
+        }).hide().appendTo('#table-body').slideDown(500);
+
+        d3.selectAll('div.permission').remove();
+        drawPermissions();
+        $(document).ready(function () {
+            $('body').scrollTo($('#table-body'), {
+                offset: -$('nav#table-header').height() - 30,
+                duration: 0
+            });
+        });
 
         // if all airlines selected - button blank, if not - button classed 'filtered-out'
         if (airlines_data.some(function (a) {
                 return a.airline_removed == true;
             })) {
-            var selected_airlines = airlines_data.filter(function (a) {
-                return a.airline_removed === false;
-            });
-            var selected_codes = [];
-            var selected_names = [];
-            selected_airlines.map(function (a) {
-                selected_codes.push(a.icao_iata.split('_')[0]);
-                selected_names.push(a.airline_name);
-            });
-            selected_codes = selected_codes.join(', ');
-            selected_names = selected_names.join(', ');
 
             d3.select('button#dropdownMenuButton')
                 .classed('items-filtered-out', true)
@@ -330,20 +357,10 @@ d3.json('avia_table.json', function(error, dataset) {
                     .attr('data-toggle', 'airline-selected-tooltip')
                     .attr('data-placement', 'bottom')
                     .classed('airline-selected-tooltip', true);
-                // $(function () {
-                //     $('[data-toggle="airline-selected-tooltip"]').tooltip();
-                // });
             }
 
             d3.select('#select-all-checkbox')
                 .classed('airline-removed', true);
-
-            // remove countries with zero routes
-            d3.selectAll('div.row.country-profile-row')
-                .filter(function () {
-                    return computeCountryTotal($(this).get(0).__data__)[0] < 1;
-                })
-                .classed('hidden-country', true);
 
         } else {
             d3.select('button#dropdownMenuButton')
@@ -360,6 +377,9 @@ d3.json('avia_table.json', function(error, dataset) {
                 .classed('airline-selected-tooltip', false);
         }
     });
+
+    var maxWidthCountryName = {'maxlen': 0, 'encoutry': ''};
+    var countryWidthRegular = 0;
 
     // ---------- Table itself -----------------------------------------------------------------------------------------
     // compute total frequencies
@@ -379,10 +399,9 @@ d3.json('avia_table.json', function(error, dataset) {
     };
 
     var totalWidthscale = d3.scaleLinear()
-        .domain([0, 240])
+        .domain([0, 210])
         .range([0, 100])
         .clamp(true);
-
 
     var drawTable = function () {
         //[dataset_selected_airlines].map(function () {
@@ -390,84 +409,94 @@ d3.json('avia_table.json', function(error, dataset) {
         var tableSection = d3.select('#table-body');
 
         var countryRows = tableSection.selectAll('div')
-            .data(dataset_selected_airlines)
+            .data(dataset)
             .enter()
             .append('div')
-            .attr('class', 'row country-profile-row')
+            .attr('class', 'row country-profile-row justify-content-end mt-2 mb-3 pt-2')
             .attr('id', function (d) {
                 return d.encoutry;
-            });
+            })
+            .style('display', 'none');
 
         // Country label
         var countryName = countryRows.append('div')
-            .attr('class', 'col-md-3 col-sm-3 col-4 text-right country-name')
+            .attr('class', 'col-auto ml-3 mr-3 text-right country-name')
             .attr('id', function (d) {
-                return d.encountry;
+                return d.encoutry;
             })
-            .text(function (d) {
+            .html(function (d) {
                 countryIds.push(d.uacountry);
-                return d.uacountry;
+                var cname = d.uacountry.split(' ');
+                var cname_len = [];
+                cname.map(function (c) {  cname_len.push(c.length)  });
+                var maxitem = cname_len.indexOf(d3.max(cname_len));
+                cname[maxitem] = '<span>' + cname[maxitem] + '</span>';
+                return cname.join(' ');
+
             });
 
-        var countryTotal = countryRows.append('div')
-            .attr('class', 'col-md-8 col-sm-7 col-6 country-total')
+        maxWidthCountryName = {'maxlen': 0, 'encoutry': ''};
+        dataset.map(function (d) {
+            var cname = d.uacountry.split(' ');
+            cname = cname.reduce(function(longest, currentWord) {
+                return currentWord.length > longest.length ? currentWord : longest;
+            }, "");
+            if (maxWidthCountryName.maxlen < cname.length) {
+                maxWidthCountryName.maxlen = cname.length;
+                maxWidthCountryName.encoutry = d.encoutry;
+            }
+        });
+
+        var countryTotalDiv = countryRows.append('div')
+            .datum(function (d) {  return computeCountryTotal(d);  })
+            .attr('class', 'col country-total mt-1');
+
+        var countryTotal = countryTotalDiv.filter(function (d) {  return d[0] > 0;  })
             .append('svg')
             .attr('width', '100%')
-            .attr('height', '3em');
+            .attr('height', '0.9rem');
 
         var countryTotalRect = countryTotal.selectAll('rect')
-            .data(function (d) {
-                return [240].concat(computeCountryTotal(d));
-            }) // 240 is convenient scale maximum
+            .data(function (d) {  return d;
+            })
             .enter()
             .append('rect')
-            .attr('x', '10%')
-            .attr('y', '0.2em')
-            .attr('height', '40%')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('height', '100%')
             .attr('width', function (d) {
                 return totalWidthscale(d) + '%'
             })
             .attr('class', function (d, i) {
-                var rect_class;
-                switch (i) {
-                    case 0:
-                        rect_class = 'blank-rect';
-                        break;
-                    case 1:
-                        rect_class = 'permission';
-                        break;
-                    case 2:
-                        rect_class = 'flight';
-                        break;
-                }
-                return 'total-country-frequency ' + rect_class;
+                var classes = ['total-country-frequency'];
+                i > 0 ? classes.push('flight') : classes.push('permission')
+                return classes.join(' ');
             });
 
-        var countryTotalLab = countryTotal.append('text')
-            .datum(function (dat) {
-                return computeCountryTotal(dat);
-            })
-            .attr('x', '10%')
-            .attr('y', '2em')
+        var countryTotalLab = countryTotalDiv.append('p')
+            .attr('class', 'country-total-lab small mb-0')
             .text(function (d) {
-                return d[1] + ' за розкладами / ' + d[0] + ' рейсів дозволено';
+                return d[1] > 0
+                    ? d[1] + ' за розкладами / видано прав на ' + d[0] + ' р/т'
+                    : 'видано прав на ' + d[0] + ' р/т';
             });
 
-        // !!! Chrome does not support preserveAspectRatio, so still have to define viewBox on our own
-        // AND WRITE SVG-coords IN % ! %! %!
-        var totalViewBoxSVG = d3.selectAll('.country-total svg')
-            .attr('viewBox', function () {
-                var bb = this.getBBox();
-                return [
-                    bb.x,
-                    bb.y,
-                    bb.width,
-                    bb.height
-                ].join(' ');
-            });
+        $(document).ready( function () {
+            $('div.country-profile-row').sort(function (a, b) {
+                return d3.descending(
+                    $(a).find('.country-total').get(0).__data__[0],
+                    $(b).find('.country-total').get(0).__data__[0]
+                );
+            }).show().appendTo('#table-body').hide().slideDown(750);
+
+            countryWidthRegular = $('#'+ maxWidthCountryName.encoutry + ' .country-name').width();
+            $('.country-name').animate({
+                width: countryWidthRegular
+            }, 500);
+        });
 
         var uncollapseCard = countryRows.append('div')
-            .attr('class', 'col-1 uncollapse-card')
+            .attr('class', 'col-1 uncollapse-card p-0 m-0 text-center')
             .attr('id', function (d) {
                 return 'collapse-' + d.encoutry;
             })
@@ -484,43 +513,40 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('class', 'fa fa-chevron-down')
             .style('font-weight', '200');
 
-        countryRows.append('div')
-            .attr('class', 'w-100');
     };
 
     drawTable();
 
-
     //--------- CARD ---------------------------------------------------------------------------------------------------
+    // Create collapsible div
+    collapseCard = d3.selectAll('div.country-profile-row')
+        .append('div')
+        .attr('class', 'col-12 collapse mt-4')
+        .attr('id', function (d) {
+            return 'collapse-card' + d.encoutry;
+        })
+        .attr('role', 'tabpanel')
+        .attr('aria-labelledby', function (d) {
+            return 'collapse-' + d.encoutry;
+        })
+        .attr('data-parent', function (d) {
+            return d.encoutry;
+        });
 
-    var drawCard = function() {
-        // Create collapsible div
-        collapseCard = d3.selectAll('div.country-profile-row')
-            .append('div')
-            .attr('class', 'col-12 collapse')
-            .attr('id', function (d) {
-                return 'collapse-card' + d.encoutry;
-            })
-            .attr('role', 'tabpanel')
-            .attr('aria-labelledby', function (d) {
-                return 'collapse-' + d.encoutry;
-            })
-            .attr('data-parent', function (d) {
-                return d.encoutry;
-            });
+    // ---------- Card rights to exploit the route -----------------------------------------------------------------
+    var routePermissionsRow = collapseCard
+        .filter(function (d) {  return computeCountryTotal(d)[0] > 0;  })
+        .append('div')
+        .attr('class', 'row permissions ');
 
-        // ---------- Card rights to exploit the route -----------------------------------------------------------------
-        var routePermissionsRow = collapseCard.append('div')
-            .attr('class', 'row permissions no-left-gutter no-right-gutter');
+    // Route permissions heading
+    routePermissionsRow.append('div')
+        .attr('class', 'col-12 mt-2 mb-4 permissions-heading')
+        .html('Надані права на експлуатацію повітряних ліній,<br/>' +
+            '<span class="small">рейсів на тиждень (р/т)</span>');
 
-        // Route permissions heading
-        routePermissionsRow.append('div')
-            .attr('class', 'col-12 permissions-heading')
-            .html('Надані права на експлуатацію повітряних ліній,<br/>' +
-                '<span style="font-weight: 200; font-variant: all-petite-caps">рейсів на тиждень</span>');
-
-        // ----- Draw small multiples of permissions. Include only selected airlines meet within country -----
-
+    // ----- Draw small multiples of permissions. Include only selected airlines meet within country ---------------
+    var drawPermissions = function () {
         // Define general data? padding, axis
         var selected_airlines = [];
         airlines_data.map(function (a) {
@@ -529,12 +555,9 @@ d3.json('avia_table.json', function(error, dataset) {
             }
         });
 
-        // Data for every chart inside chart's <div>, only airlines within country and selected ones
-        // In case some airlines are selected, all cities occupied by other airlines will be removed
         var permissionDivs = routePermissionsRow.selectAll('div.permission')
-            .data(function (d) {
-                // form permission rights array
-
+            .data(function (row) {
+                var d = dataFilterAirline([JSON.parse(JSON.stringify(row))])[0];
                 var permissions = [];
                 var country_airlines = [];
                 d.conditions.map(function (c) {
@@ -543,7 +566,7 @@ d3.json('avia_table.json', function(error, dataset) {
                         p.rights.map(function (r) {
                             // adding airline to list/array if airline is selected and not already in list
                             if ((country_airlines.indexOf(r.icao_airline) < 0) &&
-                                (selected_airlines.indexOf(r.icao_airline) >= 0)) {
+                                (selected_airlines.indexOf(r.icao_airline) > -1)) {
                                 country_airlines.push(r.icao_airline);
                             }
                         })
@@ -578,7 +601,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 // D3 scales to attach x and y on-fly. **fly**, baby:)))
                 var xScalePerm = d3.scaleLinear()
                     .domain([0, 22])
-                    .range([19, 98])
+                    .range([0, 98])
                     .clamp(true);
 
                 var yAirlineScalePoint = d3.scalePoint()
@@ -590,9 +613,9 @@ d3.json('avia_table.json', function(error, dataset) {
                 permissions.map(function (p, i) {
                     p.rights.map(function (r, j) {
                         permissions[i].rights[j].y = yAirlineScalePoint(r.icao_airline);
-                        permissions[i].rights[j].perm_width = xScalePerm(r.max_freq) - 20;
+                        permissions[i].rights[j].perm_width = xScalePerm(r.max_freq);
                         permissions[i].rights[j].flight_width = r.schedules ?
-                            xScalePerm(r.schedules.freq) - 20 :
+                            xScalePerm(r.schedules.freq) :
                             0;
                         // It is pervertion, but we store FUNCTION in js object! Axis function ... no other way;
 
@@ -610,21 +633,19 @@ d3.json('avia_table.json', function(error, dataset) {
                         permissions[i]['svg_height'] = svgHeight;
                     });
                 });
-
-                // hooooooh, done:)
                 return permissions;
             })
             .enter()
             .append('div')
-            .attr('class', 'col-xl-2 col-lg-2 col-md-3 col-sm-4 col-6 permission')
+            .attr('class', 'col-lg-3 col-md-4 col-sm-6 col-8 mb-3 permission')
             .attr('id', function (d) {
                 return d.from_encity.replace(/[\.\s]/gi, '') + '__' + d.to_encity.replace(/[\.\s]/gi, '');
             });
 
         // Route header
-        var routeHeaders = permissionDivs.append('p')
-            .attr('class', 'route-header')
-            .text(function (d) {  return d.from_city + ' – ' + d.to_city;  });
+        var routeHeaders = permissionDivs.append('div')
+            .attr('class', 'route-header small pb-1')
+            .html(function (d) {  return '<span>' + d.from_city + ' – ' + d.to_city + '</span>';  });
 
         // fix shity long route names: Abracadabra-Smthland - Dgsgsgffdfhdhdrydrgrh
         routeHeaders.filter(function () {
@@ -639,72 +660,46 @@ d3.json('avia_table.json', function(error, dataset) {
             // Count svg height
             .attr('height', function (d) {  return d.svg_height + 'em';  })
             .attr('viewBox', function (d) {  return '0, 0, 100, ' + d.svg_height * 10;  });
-            //.attr('viewBox', '0, 0, 100, 100');
-        // .on('mouseover', function (d) {
-        //     var selPath = '#' + d.from_encity + '__' + d.to_encity;
-        //     var selFrom = 'text[enname=' + d.from_encity + ']';
-        //     var selTo = 'text[enname=' + d.to_encity + ']';
-        //     d3.selectAll('svg ' + [selPath, selFrom, selTo].join(', '))
-        //         .classed('wow-mouseover', true);
-        //
-        // })
-        // .on('mouseout', function (d) {
-        //     var selPath = '#' + d.from_encity + '__' + d.to_encity;
-        //     var selFrom = 'text[enname=' + d.from_encity + ']';
-        //     var selTo = 'text[enname=' + d.to_encity + ']';
-        //     d3.selectAll('svg ' + [selPath, selFrom, selTo].join(', '))
-        //         .classed('wow-mouseover', false);
-        // });
 
         // draw permission bars, same classes as in major bar. In need to style differently, add selector by div class
         var permissionBars = permissionSVGs.selectAll('rect.permission')
-            .data(function (d) {
-                return d.rights;
-            })
+            .data(function (d) {  return d.rights;   })
             .enter()
             .append('rect')
             .attr('class', 'permission')
-            .attr('x', 19)
-            .attr('y', function (d) {
-                return d.y;
-            })
+            .attr('x', 0)
+            .attr('y', function (d) {  return d.y;  })
             .attr('height', 5)
             .attr('width', function (d) {
                 return d.perm_width;
             });
 
         var permissionFlightBars = permissionSVGs.selectAll('rect.flight')
-            .data(function (d) {
-                return d.rights;
-            })
+            .data(function (d) {  return d.rights;  })
             .enter()
             .append('rect')
             .attr('class', 'flight')
-            .attr('x', 19)
-            .attr('y', function (d) {
-                return d.y;
-            })
+            .attr('x', 0)
+            .attr('y', function (d) {  return d.y;  })
             .attr('height', 5)
-            .attr('width', function (d) {
-                return d.flight_width;
-            });
+            .attr('width', function (d) {  return d.flight_width;  });
 
 
-        // Simply call on permissionSVGs does not work TODO fix
+        // Simple call on permissionSVGs does not work, so each
         d3.selectAll('div.permission svg')
             .each(function (svg) {
                 d3.select(this)
                     .append('g')
                     .attr('class', 'frequency-axis-x')
                     .attr('transform', function (d) {
-                        return 'translate(0, ' + (d.svg_height * 10 - 18) + ')';
+                        return 'translate(-2, ' + (d.svg_height * 10 - 18) + ')';
                     })
                     .call(svg.axis_x_function);
 
                 d3.select(this)
                     .append('g')
                     .attr('class', 'airlines-axis-y')
-                    .attr('transform', 'translate(19, 2.5)')
+                    .attr('transform', 'translate(0, 2.5)')
                     .call(svg.axis_y_function);
             });
 
@@ -716,7 +711,7 @@ d3.json('avia_table.json', function(error, dataset) {
         })
             .append('text')
             .attr('class', 'flights-per-week-lab')
-            .attr('x', 1)
+            .attr('x', '-24%')
             .attr('y', function (d) {
                 return d.svg_height * 10 - 9;
             })
@@ -729,7 +724,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 return airlines_data.filter(
                     function (a) {
                         return a.icao_iata.split('_')[0] == d;
-                    })[0].airline_name;
+                    })[0].airline_label;
             })
             .attr('data-toggle', 'airline-icao-tooltipped')
             .attr('data-placement', 'right');
@@ -741,7 +736,6 @@ d3.json('avia_table.json', function(error, dataset) {
 
         d3.selectAll('div.permissions rect')
             .classed('permission-bar-tooltipped', true)
-            .attr('data-toggle', 'easter-egg')
             .attr('data-html', true);
 
         // Flight right tooltip
@@ -770,322 +764,193 @@ d3.json('avia_table.json', function(error, dataset) {
                 return route_airlines.indexOf(a) < 0;
             })
             .classed('no-flights-airline-lab', true);
-
-
-        // ---------- Table of treaty conditions -----------------------------------------------------------------------
-        var treatyConditionsRow = collapseCard.append('div')
-            .attr('class', 'row treaty no-left-gutter no-right-gutter');
-
-        treatyConditionsRow.append('div')
-            .attr('class', 'col-12 treaty-heading')
-            .text('Умови розподілу рейсів за міжнародною угодою');
-
-        var treatyTableRow = treatyConditionsRow.selectAll('div.treaty-table-col-main')
-            .data(function (d) {
-                return d.conditions;
-            })
-            .enter()
-            .append('div')
-            .attr('class', 'col-12 treaty-table-col-main')
-            .append('div')
-            .attr('class', 'row no-gutters treaty-table-row')
-            .attr('id', function (d) {
-                return [
-                    d.en_from.replace(/[\.\s]/gi, ''),
-                    d.en_to.replace(/[\.\s]/gi, '')
-                ].join('__');
-            });
-
-        var routes = treatyTableRow.append('div')
-            .attr('class', 'col-md-3 col-sm-4 col-12 country-routes-diagram');
-
-        var treatyFlightLimits = treatyTableRow.append('div')
-            .attr('class', 'col-md-3 col-sm-4 col-12 treaty-flight-limits');
-
-        var treatyAirlineLimits = treatyTableRow.append('div')
-            .attr('class', 'col-md-4 col-sm-4 col-12 treaty-airline-limits');
-
-        // Table headers
-        routes.append('p')
-            .attr('class', 'limit-heading')
-            .text('Маршрути');
-        treatyFlightLimits.append('p')
-            .attr('class', 'limit-heading')
-            .text('Частота рейсів');
-        treatyAirlineLimits.append('p')
-            .attr('class', 'limit-heading')
-            .text('Кількість авіакомпаній');
-
-        routes.filter(function (d) {  return d.ua_from === d.ua_to;  });
-        routes.filter(function (d) {  return d.ua_from !== d.ua_to;  });
-
-        var uaRouteList = routes.filter(function (d) {  return d.ua_from !== d.ua_to;  })
-            .append('p')
-            .attr('class', 'ua-points')
-            .html(function (d) {
-                return d.ua_from.split('--').join(', ');
-            });
-
-        var foreignRouteList = routes.filter(function (d) {  return d.ua_from !== d.ua_to;  })
-            .selectAll('p.foreign-points')
-            .data(function (d) {  return d.ua_to.split('--');  })
-            .enter()
-            .append('p')
-            .attr('class', 'foreign-points')
-            .html(function (d) {
-                return '<i class="fa fa-plane"></i>' + ' ' + d;
-            });
-
-        var unlimitedRoutes = routes.filter(function (d) {  return d.ua_from === d.ua_to;  })
-            .append('p')
-            .attr('class', 'unlimited-points')
-            .text('без обмежень');
-
-
-        var freqLimits = treatyFlightLimits.selectAll('p.flight-limits-val')
-            .data(function (d) {
-                return d.limits.flights;
-            })
-            .enter()
-            .append('p')
-            .attr('class', function (d) {
-                var classes = ['flight-lim', 'limits-val'];
-                if (!d.scope) {  classes.push('unlimited-limit')  }
-                return classes.join(' ');
-            })
-            .html(function (d) {
-                var limit = d.limit === 999 ? 'необмежено' : d.limit;
-                if (d.scope) {
-                    return limit === 'необмежено'
-                        ? d.scope_text +
-                        '<br/><span class="limit-figure unlimited">∞</span>'
-                        : d.scope_text +
-                        '<br/><span class="limit-figure">' + limit + '</span>' + ' р/т';
-
-                } else {
-                    return 'без обмежень';
-                }
-            });
-
-        var airlineLimits = treatyAirlineLimits.selectAll('p.airline-limits-val')
-            .data(function (d) {
-                return d.limits.airlines;
-            })
-            .enter()
-            .append('p')
-            .attr('class', function (d) {
-                var classes = ['airline-lim', 'limits-val'];
-                if (!d.scope) {
-                    classes.push('unlimited-limit')
-                }
-                return classes.join(' ');
-            })
-            .html(function (d) {
-                var limit = d.limit === 999 ? 'необмежено' : d.limit;
-                if (d.scope) {
-                    return limit === 'необмежено'
-                        ? d.scope_text +
-                        '<br/><span class="limit-figure unlimited">∞</span>'
-                        : d.scope_text +
-                        '<br/><span class="limit-figure">' + limit + '</span>';
-
-                } else {
-                    return 'без обмежень';
-                }
-            });
-
-        var commentLine = treatyTableRow.filter(function (d) {  return d.comment != '';  })
-            .append('div')
-            .attr('class', 'col-12 treaty-comment')
-            .text(function (d) {  return d.comment;  });
-
-        d3.selectAll('span.limit-figure.unlimited')
-            .attr('title', 'необмежено');
-
-
-        // uncollapse previously selected
-        $('.collapse').on('show.bs.collapse', function () {
-            $('.card-open div.collapse').collapse('hide');
-        });
-        // Change icon and add border to card on uncollapse
-        $('.collapse').on('shown.bs.collapse', function () {
-            d3.select(this.parentNode)
-                .classed('card-open', true)
-                .classed('already-viewed', true);
-
-            d3.select(this.parentNode)
-                .select('a i')
-                .attr('class', 'fa fa-chevron-up');
-
-            $('body').scrollTo($(this.parentNode), {
-                offset: -$('nav#table-header').height() - 2,
-                duration: 750
-            });
-        });
-
-        $('.collapse').on('hide.bs.collapse', function () {
-
-            d3.select(this.parentNode)
-                .classed('card-open', false);
-
-            d3.select(this.parentNode)
-                .select('a i')
-                .attr('class', 'fa fa-chevron-down');
-
-            $('#clear-search').click();
-        });
-
-        // Easter Egg
-        // d3.selectAll('div.permission rect.flight, div.permission rect.permission')
-        //     .filter(function (d) {  return d.schedules;  })
-        //     .on('dblclick', function (d) {
-        //         var frUrls = [];
-        //         d.schedules.flights.split(', ').map(function (f) {
-        //             frUrls.push('https://www.flightradar24.com/data/flights/' + d.iata_airline + f.slice(2).replace(/[a-zA-Z]+/, ''));
-        //         });
-        //         $(function () {
-        //             $('[data-toggle="easter-egg"]').popover({content: "myDearContent", title: 'MyTitle'});
-        //         });
-        //     });
     };
 
-
-
-    //     // ---------- Route SVG ----------
-    //     var routeSvg = routeDiagram.append('svg')
-    //         .attr('width', '100%')
-    //         .attr('heigh', '100%')
-    //         .attr('viewBox', '0 0 100 100');
-    //
-    //     //----- Function to define coordinates of text and path of route diagram -----
-    //     var pointCoords = function (dat) {
-    //         var points = [];
-    //
-    //         var from_en_points = dat.en_from.split('--');
-    //         var from_ua_points = dat.ua_from.split('--');
-    //         var to_en_points = dat.en_to.split('--');
-    //         var to_ua_points = dat.ua_to.split('--');
-    //
-    //         var uaYScalePoint = d3.scalePoint()
-    //             .domain(d3.range(from_en_points.length))
-    //             .range([10, 90]);
-    //         var foreignYScalePoint = d3.scalePoint()
-    //             .domain(d3.range(to_ua_points.length))
-    //             .range([10, 90]);
-    //
-    //         from_en_points.map(function (point, i) {
-    //             points.push({
-    //                 'en_point': point,
-    //                 'ua_point': from_ua_points[i],
-    //                 'isua': true,
-    //                 'y': uaYScalePoint(i),
-    //                 'x': 40
-    //             });
-    //         });
-    //         to_en_points.map(function (point, i) {
-    //             points.push({
-    //                 'en_point': point,
-    //                 'ua_point': to_ua_points[i],
-    //                 'isua': false,
-    //                 'y': foreignYScalePoint(i),
-    //                 'x': 60
-    //             });
-    //         });
-    //         return points;
-    //     };
-    //
-    //     var routeCircles = routeSvg.selectAll('circle.point')
-    //         .data(function (d) {  return pointCoords(d);  })
-    //         .enter()
-    //         .append('circle')
-    //         .attr('cx', function (d) {  return d.x;  })
-    //         .attr('cy', function (d) {  return d.y;  })
-    //         .attr('r', '1px')
-    //         .attr('class', function (d) {  return d.isua ? 'point ua' : 'point foreign';  });
-    //
-    //     var routeLabels = routeSvg.selectAll('text.label')
-    //         .data(function (d) {  return pointCoords(d);  })
-    //         .enter()
-    //         .append('text')
-    //         .attr('x', function (d) {  return d.isua ? d.x - 4 : d.x + 4;  })
-    //         .attr('y', function (d) {  return d.y;  })
-    //         .attr('class', function (d) {  return d.isua ? 'label ua' : 'label foreign';  })
-    //         .selectAll('tspan')
-    //         .data(function (d) {
-    //             if (d.ua_point.indexOf('-') >= 0) {
-    //                 var splitDash = d.ua_point.split('-');
-    //                 splitDash.map(function (part, i) {
-    //                     splitDash[i] = i < splitDash.length - 1
-    //                         ? part + '-'
-    //                         : part;
-    //                 });
-    //                 return splitDash;
-    //             } else if (d.ua_point.indexOf(' ') >= 0) {
-    //                 return d.ua_point.split(' ');
-    //             } else {
-    //                 return [d.ua_point];
-    //             }
-    //         })
-    //         .enter()
-    //         .append('tspan')
-    //         .attr('x', function () {
-    //             return this.parentNode.__data__.isua ?
-    //                 this.parentNode.__data__.x - 4 :
-    //                 this.parentNode.__data__.x + 4;
-    //         })
-    //         .attr('dy', function (d, i) {  return i * 0.85 + 'em'  })
-    //         .text(function (d) {  return d != 'NA' ? d : 'не визначено';  });
-    //
-    //     // SVG path between all routes
-    //     var routePath = routeSvg.selectAll('path.routeline')
-    //         .data(function (d) {
-    //             var point_pairs = [];
-    //
-    //             var point_coords_data = pointCoords(d);
-    //             var ua_points = point_coords_data.filter(function (po) {
-    //                 return po.isua;
-    //             });
-    //             var foreign_points = point_coords_data.filter(function (po) {
-    //                 return !po.isua;
-    //             });
-    //
-    //             ua_points.map(function (ua) {
-    //                 foreign_points.map(function (foreign) {
-    //                     point_pairs.push({
-    //                         'xua': ua.x,
-    //                         'yua': ua.y,
-    //                         'xfrgn': foreign.x,
-    //                         'yfrgn': foreign.y,
-    //                         'id': ua.en_point + '__' + foreign.en_point
-    //                     });
-    //                 });
-    //             });
-    //             return point_pairs;
-    //         })
-    //         .enter()
-    //         .append('path')
-    //         .attr('class', 'routeline')
-    //         .attr('d', function (d) {
-    //             return d.yua < d.yfrgn
-    //
-    //                 ? 'M' + d.xua + ',' + d.yua +
-    //                 ' A 115,115 0 0 1 ' +
-    //                 d.xfrgn + ',' + d.yfrgn
-    //
-    //                 : 'M' + d.xua + ',' + d.yua +
-    //                 ' A 115,115 0 0 0 ' +
-    //                 d.xfrgn + ',' + d.yfrgn;
-    //         })
-    //         .attr('id', function (d) {  return d.id;  });
-    //
-    //
-    // };
-
-    drawCard();
-
-// var acceptEasterEgg = false;
+    drawPermissions();
 
 
 
+
+    // ---------- Table of treaty conditions -----------------------------------------------------------------------
+    var treatyConditionsRow = collapseCard.append('div')
+        .attr('class', 'row treaty');
+
+    treatyConditionsRow.append('div')
+        .attr('class', 'col-12 mt-3 mb-3 treaty-heading')
+        .text(function (d) {
+            return d.stage === 'проект'
+                ? 'Умови розподілу рейсів у проекті угоди'
+                : 'Умови розподілу рейсів за міжнародною угодою'
+        });
+
+    var treatyTableRow = treatyConditionsRow.selectAll('div.treaty-table-col-main')
+        .data(function (d) {
+            return d.conditions;
+        })
+        .enter()
+        .append('div')
+        .attr('class', 'col-12 treaty-table-col-main pb-4')
+        .append('div')
+        .attr('class', 'row no-gutters treaty-table-row pt-2')
+        .attr('id', function (d) {
+            return [
+                d.en_from.replace(/[\.\s]/gi, ''),
+                d.en_to.replace(/[\.\s]/gi, '')
+            ].join('__');
+        });
+
+    var routes = treatyTableRow.append('div')
+        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 country-routes-diagram');
+
+    var treatyFlightLimits = treatyTableRow.append('div')
+        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 treaty-flight-limits');
+
+    var treatyAirlineLimits = treatyTableRow.append('div')
+        .attr('class', 'col-md-4 col-sm-4 col-12 treaty-airline-limits');
+
+    // Table headers
+    routes.append('p')
+        .attr('class', 'limit-heading')
+        .text('Маршрути');
+    treatyFlightLimits.append('p')
+        .attr('class', 'limit-heading')
+        .text('Частота рейсів');
+    treatyAirlineLimits.append('p')
+        .attr('class', 'limit-heading')
+        .text('Кількість авіакомпаній');
+
+    var uaRouteList = routes.filter(function (d) {  return d.ua_from !== d.ua_to;  })
+        .append('p')
+        .attr('class', 'ua-points')
+        .html(function (d) {
+            return d.ua_from.split('--').join(', ');
+        });
+
+    var foreignRouteList = routes.filter(function (d) {  return d.ua_from !== d.ua_to;  })
+        .selectAll('p.foreign-points')
+        .data(function (d) {  return d.ua_to.split('--');  })
+        .enter()
+        .append('p')
+        .attr('class', 'foreign-points')
+        .html(function (d) {
+            return '<i class="fa fa-plane"></i>' + ' ' + d;
+        });
+
+    var unlimitedRoutes = routes.filter(function (d) {  return d.ua_from === d.ua_to;  })
+        .append('p')
+        .attr('class', 'unlimited-points')
+        .text('без обмежень');
+
+
+    var freqLimits = treatyFlightLimits.selectAll('p.flight-limits-val')
+        .data(function (d) {
+            return d.limits.flights;
+        })
+        .enter()
+        .append('p')
+        .attr('class', function (d) {
+            var classes = ['flight-lim', 'limits-val'];
+            if (!d.scope) {  classes.push('unlimited-limit')  }
+            return classes.join(' ');
+        })
+        .html(function (d) {
+            var limit = d.limit === 999 ? 'необмежено' : d.limit;
+            if (d.scope) {
+                return limit === 'необмежено'
+                    ? d.scope_text +
+                    '<br/><span class="limit-figure unlimited">∞</span>'
+                    : d.scope_text +
+                    '<br/><span class="limit-figure">' + limit + '</span>' + ' р/т';
+
+            } else {
+                return 'без обмежень';
+            }
+        });
+
+    var airlineLimits = treatyAirlineLimits.selectAll('p.airline-limits-val')
+        .data(function (d) {
+            return d.limits.airlines;
+        })
+        .enter()
+        .append('p')
+        .attr('class', function (d) {
+            var classes = ['airline-lim', 'limits-val'];
+            if (!d.scope) {
+                classes.push('unlimited-limit')
+            }
+            return classes.join(' ');
+        })
+        .html(function (d) {
+            var limit = d.limit === 999 ? 'необмежено' : d.limit;
+            if (d.scope) {
+                return limit === 'необмежено'
+                    ? d.scope_text +
+                    '<br/><span class="limit-figure unlimited">∞</span>'
+                    : d.scope_text +
+                    '<br/><span class="limit-figure">' + limit + '</span>';
+
+            } else {
+                return 'без обмежень';
+            }
+        });
+
+    var commentLine = treatyTableRow.filter(function (d) {  return d.comment != '';  })
+        .append('div')
+        .attr('class', 'col-12 treaty-comment small')
+        .text(function (d) {  return d.comment;  });
+
+    d3.selectAll('span.limit-figure.unlimited')
+        .attr('title', 'необмежено');
+
+
+    // uncollapse previously selected
+    $('.collapse').on('show.bs.collapse', function () {
+        $('.card-open div.collapse').collapse('hide');
+    });
+
+    // Change icon and add border to card on uncollapse
+    $('.collapse').on('shown.bs.collapse', function () {
+        $(document).ready(function () {
+            var maxHHeight = 0;
+            $('div.permission:visible div').each(function () {
+                maxHHeight = maxHHeight > $(this).height() ? maxHHeight : $(this).height();
+            }).each(function () {
+                $(this).height(maxHHeight);
+            });
+        });
+
+        d3.select(this.parentNode)
+            .classed('card-open', true)
+            .classed('already-viewed', true);
+
+        d3.select(this.parentNode)
+            .select('a i')
+            .attr('class', 'fa fa-chevron-up');
+
+        $('body').scrollTo($(this.parentNode), {
+            offset: -$('nav#table-header').height() - 35,
+            duration: 750
+        });
+
+        $('.card-open .country-name').animate({
+            width: $('.card-open .country-name span').width()
+        });
+    });
+
+    $('.collapse').on('hide.bs.collapse', function () {
+
+        $('.card-open .country-name').animate({
+            width: countryWidthRegular
+        }, 750);
+
+        d3.select(this.parentNode)
+            .classed('card-open', false);
+
+        d3.select(this.parentNode)
+            .select('a i')
+            .attr('class', 'fa fa-chevron-down');
+    });
 
 });
+
+

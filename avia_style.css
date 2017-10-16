@@ -1,0 +1,357 @@
+body, section#title-lead h2, section#title-lead p, button#dropdownMenuButton, .dropdown-menu, input#country-input {
+  font-family: Open Sans, sans-serif;
+  color: #d1d1d4;
+  background-color: #242426;
+  letter-spacing: 0.04em;
+}
+
+div#logo-buttons {
+  z-index: 4300;
+  position: fixed;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  background-color: #242426;
+}
+
+@media (max-width: 575px) {
+  div#logo-buttons {
+    padding-right: 1em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+  }
+}
+@media (min-width: 576px) {
+  div#logo-buttons {
+    padding-right: 2em;
+    padding-bottom: 1em;
+    padding-left: 2em;
+  }
+}
+img#texty-logo {
+  height: 0.75em;
+}
+
+#social-icons a.share-btn {
+  color: #9f8df7;
+  text-decoration: none !important;
+  padding-left: 1em;
+}
+
+#social-icons i {
+  color: #9f8df7;
+  cursor: pointer;
+}
+
+p.stressed-paragraph, .permissions-heading, .treaty-heading {
+  font-size: 1.5rem;
+  color: #9f8df7 !important;
+  font-family: PT Mono, monospace !important;
+  font-weight: 800 !important;
+  line-height: 1.75em !important;
+}
+
+section#title-lead h1 {
+  font-size: 3em;
+  color: #9f8df7;
+  font-family: PT Mono, monospace;
+  font-weight: 800;
+  padding-bottom: 0.5em;
+  padding-top: 1em;
+}
+section#title-lead h2, section#title-lead p {
+  background-color: transparent;
+  font-size: 1em;
+  line-height: 1.75em;
+  font-weight: normal;
+}
+
+#map {
+  width: 100%;
+  height: 62vmin;
+  border: 1px solid #4b4b4d;
+}
+
+#update-info p {
+  font-family: PT Mono, monospace !important;
+  color: #56fb1c !important;
+}
+
+.tooltip-inner {
+  max-width: 62vmin;
+  padding: 0.33rem;
+  color: #d1d1d4;
+  text-align: left;
+  background-color: #4b4b4d;
+  border-radius: 0;
+  border: none;
+  font-family: PT Mono, monospace !important;
+}
+.tooltip-inner .flight-codes {
+  color: #56fb1c;
+}
+
+nav#table-header {
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  top: -1px;
+  z-index: 4200 !important;
+  background-color: #242426;
+  padding-top: 0.75em;
+  padding-bottom: 0.75em;
+  border-bottom: solid #4b4b4d 0.22px;
+}
+
+button#dropdownMenuButton {
+  cursor: pointer;
+  border: none;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+.dropdown-menu {
+  border: none;
+  border-radius: 0;
+  background-color: #242426;
+  font-family: PT Mono, monospace !important;
+}
+
+label.menu-airline {
+  color: #d1d1d4;
+  display: block;
+  padding: 0.25em;
+  border: solid #4b4b4d 0.22px;
+  font-family: PT Mono, monospace !important;
+}
+
+label.menu-airline i {
+  color: #56fb1c;
+}
+
+label.menu-airline.airline-removed i {
+  color: #d1d1d4;
+}
+
+#select-all-checkbox {
+  font-style: italic;
+}
+
+input#country-input {
+  border: none;
+  width: 100%;
+  background-color: transparent;
+  outline-color: transparent !important;
+  color: #d1d1d4;
+  font-family: PT Mono, monospace !important;
+}
+
+input#country-input::-webkit-input-placeholder {
+  text-align: end;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+input#country-input::-moz-placeholder {
+  text-align: end;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+input#country-input:-moz-placeholder {
+  text-align: end;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+input#country-input:-ms-input-placeholder {
+  text-align: end;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+.tt-menu {
+  padding-left: 1rem;
+  display: none !important;
+  font-family: PT Mono, monospace !important;
+}
+
+.tt-hint {
+  width: 100%;
+  color: #a1a1a4;
+  font-family: PT Mono, monospace !important;
+}
+
+div#table-body {
+  font-family: PT Mono, monospace !important;
+}
+
+div.country-profile-row {
+  padding: 1px;
+}
+
+div.country-name {
+  color: #9f8df7;
+  vertical-align: middle;
+}
+
+.card-open div.country-name {
+  font-weight: 800;
+}
+
+rect.permission {
+  fill-opacity: 0;
+  stroke: #56fb1c;
+  stroke-width: 1.5px;
+}
+
+div.permission rect.permission {
+  stroke-width: 0.5px;
+}
+
+rect.flight {
+  stroke-opacity: 0;
+  fill: #56fb1c;
+}
+
+.country-total p {
+  fill: #d1d1d4;
+  font-size: 0.85rem;
+  alignment-baseline: hanging;
+}
+
+.uncollapse-card i {
+  color: #9f8df7;
+  font-size: 0.9rem;
+}
+
+div.already-viewed {
+  background-color: #29292c;
+}
+
+div.card-open {
+  border: 0.01rem solid rgba(86, 251, 28, 0.25);
+}
+
+div.collapse {
+  background-color: #242426;
+}
+
+.permissions-heading, .treaty-heading {
+  font-size: 1rem;
+}
+
+div.permission div, div.permission svg {
+  padding-left: 23%;
+  overflow: visible;
+}
+div.permission .frequency-axis-x text {
+  font-size: 0.7em;
+  fill: #a1a1a4;
+}
+div.permission .frequency-axis-x path, div.permission .frequency-axis-x line {
+  stroke-width: 0.2px;
+  stroke: #a1a1a4;
+  stroke-opacity: 1;
+}
+div.permission .airlines-axis-y path {
+  display: none;
+}
+div.permission .airlines-axis-y line {
+  stroke-width: 0.2px;
+  stroke: #a1a1a4;
+  stroke-opacity: 1;
+}
+div.permission .airlines-axis-y text {
+  fill: #a1a1a4;
+  font-size: 0.7em;
+}
+div.permission .airlines-axis-y text.no-flights-airline-lab {
+  fill: #4b4b4d;
+}
+div.permission text.flights-per-week-lab {
+  font-style: italic;
+  font-size: 0.5rem;
+  fill: #a1a1a4;
+}
+
+div.treaty-table-col-main {
+  border-bottom: #56fb1c dotted 0.6px;
+}
+
+p.limit-heading {
+  color: #9f8df7;
+}
+
+.ua-points {
+  color: #56fb1c;
+}
+
+.foreign-points i, .limit-figure {
+  color: #56fb1c;
+}
+
+.unlimited-points, .unlimited-limit {
+  font-size: 1rem;
+  color: #56fb1c;
+  font-style: italic;
+}
+
+#footer {
+  z-index: 4500;
+  bottom: 0;
+  width: 100%;
+  background: #242426 none repeat scroll 0 0;
+  text-align: left;
+  font-size: 14px;
+  padding: 1.5rem;
+  display: block;
+  margin-top: 50px;
+}
+
+#footer h4 {
+  font-size: 18px;
+  color: #d1d1d4;
+}
+
+#footer a {
+  text-decoration: none;
+  font-size: 0.7em;
+  color: #d1d1d4;
+}
+
+@media (max-width: 767px) {
+  .country-total p {
+    font-size: 0.7rem;
+  }
+
+  #footer li {
+    display: none;
+  }
+}
+#footer a:hover, a.support-site {
+  color: #FAA61A !important;
+}
+
+.copying-info {
+  padding-top: 20px;
+  font-size: 0.7em;
+  line-height: 1rem;
+  color: #a1a1a4;
+}
+
+#thank-you-d3 {
+  padding-top: 20px;
+  color: #a1a1a4;
+  font-size: 0.7em;
+  line-height: 1rem;
+}
+#thank-you-d3 a {
+  text-decoration: none;
+  color: #a1a1a4;
+  font-size: 1em !important;
+}
+#thank-you-d3 a i {
+  color: crimson;
+}
+
+/*# sourceMappingURL=avia_style.css.map */

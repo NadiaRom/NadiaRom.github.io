@@ -14,47 +14,54 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     map.getPane('labels').style.zIndex = 450;
     map.getPane('labels').style.pointerEvents = 'none';
 
-    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png',
-        {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-            subdomains: 'abcd',
-            maxZoom: 12,
-            minZoom: 2
-        });
+    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        subdomains: 'abcd',
+        maxZoom: 8
+    });
 
-    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png',
-        {
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-            subdomains: 'abcd',
-            maxZoom: 12,
-            minZoom: 2,
-            pane: 'labels'
-        });
+    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        subdomains: 'abcd',
+        pane: 'labels',
+        maxZoom: 8
+    });
 
     function styleFunc(feature) {
-        var fill = '';
-
         if (feature.properties.encountry == 'Ukraine') {
-            fill = '#ca93fb';
+            var fill = 'none';
+            var stroke = '#56FB1C';
+            var bweight = 2;
+
         } else {
-            switch (feature.properties.treaty_stage) {
-                case 'проект':
-                    fill = '#aadec4';
-                    break;
-                case 'парафована':
-                    fill = '#7ecda8';
-                    break;
-                case 'підписана':
-                    fill = '#6dc69e';
-                    break;
-                case 'чинна':
-                    fill = '#5bc195';
-            }
+            fill = feature.properties.treaty_stage === 'проект'
+                ? '#4a9830' : '#56FB1C';
+            stroke = '#0e0e0e';
+            bweight = 1;
         }
+
+
+        // if (feature.properties.encountry == 'Ukraine') {
+        //     fill = '#ca93fb';
+        // } else {
+        //     switch (feature.properties.treaty_stage) {
+        //         case 'проект':
+        //             fill = '#4a9830';
+        //             break;
+        //         case 'парафована':
+        //             fill = '#56FB1C';
+        //             break;
+        //         case 'підписана':
+        //             fill = '#56FB1C';
+        //             break;
+        //         case 'чинна':
+        //             fill = '#56FB1C';
+        //     }
+        // }
         return {
             fillColor: fill,
-            color: '#575a5d',
-            weight: 0.5,
+            color: stroke,
+            weight: bweight,
             fillOpacity: 0.7
         };
     }
@@ -68,12 +75,6 @@ d3.json('country_treaties.geojson', function (error, geojson) {
 
             $('body').scrollTo($('nav#table-header'), {
                 duration: 440
-            });
-
-            $('body').scrollTo($('div#' + this.feature.properties.encountry), {
-                offset: -$('nav#table-header').height() - 2,
-                duration: 0,
-                easing: 'linear'
             });
 
             $('.typeahead').typeahead('val', '');
@@ -115,4 +116,14 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     CartoDB_PositronOnlyLabels.addTo(map);
     CartoDB_PositronNoLabels.addTo(map);
 
+});
+var updateInfoUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPQDtGQN16XDQOnHhUhxo9KOMixJbbwBnERuDKysCe3ucMzgxS4Rs61w2aLQvFA8isPJ4b86I0P4e-/pub?gid=670069218&single=true&output=tsv';
+d3.tsv(updateInfoUrl, function (error, info) {
+    if (error) {  throw error;  }
+    info = info[0];
+    d3.select('#update-info')
+        .html(
+            '<p class="small mb-0 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
+            'Маємо розклади ' + info.schedules_ac + '<br/>' + ' від ' + info.schedules_update + '</p>'
+        );
 });
