@@ -22,7 +22,8 @@ div#logo-buttons {
   }
 
   img#texty-logo, img#saau-logo {
-    height: 8px;
+    max-height: 8px;
+    width: 100%;
   }
 }
 @media (min-width: 768px) {
@@ -126,7 +127,8 @@ a.leaflet-control-zoom-in:hover {
 
 .tooltip-inner {
   max-width: 62vmin;
-  padding: 0.33rem;
+  padding: 0.33rem 0.33rem 33rem 0.33rem;
+  margin: 0;
   color: #d1d1d4;
   text-align: left;
   background-color: #4b4b4d;
@@ -144,8 +146,6 @@ nav#table-header {
   top: -1px;
   z-index: 4200 !important;
   background-color: #242426;
-  padding-top: 0.75em;
-  padding-bottom: 0.75em;
   border-bottom: solid #4b4b4d 0.22px;
 }
 
