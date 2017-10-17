@@ -14,7 +14,7 @@ div#logo-buttons {
   background-color: #242426;
 }
 
-@media (max-width: 575px) {
+@media (max-width: 767px) {
   div#logo-buttons {
     padding-right: 0.5rem;
     padding-bottom: 0.5rem;
@@ -25,7 +25,7 @@ div#logo-buttons {
     height: 8px;
   }
 }
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   div#logo-buttons {
     padding-top: 0.25rem;
     padding-right: 2rem;
