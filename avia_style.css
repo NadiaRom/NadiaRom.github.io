@@ -16,26 +16,32 @@ div#logo-buttons {
 
 @media (max-width: 575px) {
   div#logo-buttons {
-    padding-right: 1em;
-    padding-bottom: 0.5em;
-    padding-left: 1em;
+    padding-right: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  img#texty-logo, img#saau-logo {
+    height: 0.5rem;
   }
 }
 @media (min-width: 576px) {
   div#logo-buttons {
-    padding-right: 2em;
-    padding-bottom: 1em;
-    padding-left: 2em;
+    padding-top: 0.25rem;
+    padding-right: 2rem;
+    padding-bottom: 0.75rem;
+    padding-left: 2rem;
+  }
+
+  img#texty-logo, img#saau-logo {
+    height: 0.85rem;
   }
 }
-img#texty-logo {
-  height: 0.75em;
-}
-
 #social-icons a.share-btn {
   color: #9f8df7;
   text-decoration: none !important;
-  padding-left: 1em;
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
 }
 
 #social-icons i {
@@ -114,6 +120,7 @@ a.leaflet-control-zoom-in:hover {
 #update-info p {
   font-family: PT Mono, monospace !important;
   color: #56fb1c !important;
+  font-size: 11px !important;
 }
 
 .tooltip-inner {

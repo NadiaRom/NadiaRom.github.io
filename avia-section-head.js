@@ -99,7 +99,7 @@ d3.tsv(updateInfoUrl, function (error, info) {
     info = info[0];
     d3.select('#update-info')
         .html(
-            '<p class="small mb-0 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
+            '<p class="mb-0 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
             'Маємо розклади ' + info.schedules_ac + '<br/>' + ' від ' + info.schedules_update + '</p>'
         );
 });
