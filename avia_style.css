@@ -22,7 +22,7 @@ div#logo-buttons {
   }
 
   img#texty-logo, img#saau-logo {
-    height: 0.5em;
+    height: 8px;
   }
 }
 @media (min-width: 576px) {
@@ -34,7 +34,8 @@ div#logo-buttons {
   }
 
   img#texty-logo, img#saau-logo {
-    height: 0.85em;
+    max-height: 12px;
+    width: 100%;
   }
 }
 #social-icons a.share-btn {
