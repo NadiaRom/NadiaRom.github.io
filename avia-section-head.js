@@ -28,43 +28,15 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     });
 
     function styleFunc(feature) {
-        if (feature.properties.encountry == 'Ukraine') {
-            var fill = 'none';
-            var stroke = '#56FB1C';
-            var bweight = 2;
 
-        } else {
-            fill = feature.properties.treaty_stage === 'проект'
-                ? '#4a9830' : '#56FB1C';
-            stroke = '#0e0e0e';
-            bweight = 1;
-        }
-
-
-        // if (feature.properties.encountry == 'Ukraine') {
-        //     fill = '#ca93fb';
-        // } else {
-        //     switch (feature.properties.treaty_stage) {
-        //         case 'проект':
-        //             fill = '#4a9830';
-        //             break;
-        //         case 'парафована':
-        //             fill = '#56FB1C';
-        //             break;
-        //         case 'підписана':
-        //             fill = '#56FB1C';
-        //             break;
-        //         case 'чинна':
-        //             fill = '#56FB1C';
-        //     }
-        // }
         return {
-            fillColor: fill,
-            color: stroke,
-            weight: bweight,
-            fillOpacity: 0.7
+            fillOpacity: 0.00001,
+            fill: '#000000',
+            color: '#56FB1C',
+            weight: 0.3
         };
     }
+
 
     function moveToCountry() {
         if (this.feature.properties.encountry !== 'Russia') {

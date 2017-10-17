@@ -543,7 +543,7 @@ d3.json('avia_table.json', function(error, dataset) {
     routePermissionsRow.append('div')
         .attr('class', 'col-12 mt-2 mb-4 permissions-heading')
         .html('Надані права на експлуатацію повітряних ліній,<br/>' +
-            '<span class="small">рейсів на тиждень (р/т)</span>');
+            '<span class="small text-lowercase font-weight-normal">рейсів на тиждень (р/т)</span>');
 
     // ----- Draw small multiples of permissions. Include only selected airlines meet within country ---------------
     var drawPermissions = function () {
@@ -810,13 +810,13 @@ d3.json('avia_table.json', function(error, dataset) {
 
     // Table headers
     routes.append('p')
-        .attr('class', 'limit-heading')
+        .attr('class', 'small limit-heading')
         .text('Маршрути');
     treatyFlightLimits.append('p')
-        .attr('class', 'limit-heading')
+        .attr('class', 'small limit-heading')
         .text('Частота рейсів');
     treatyAirlineLimits.append('p')
-        .attr('class', 'limit-heading')
+        .attr('class', 'small limit-heading')
         .text('Кількість авіакомпаній');
 
     var uaRouteList = routes.filter(function (d) {  return d.ua_from !== d.ua_to;  })
@@ -849,7 +849,7 @@ d3.json('avia_table.json', function(error, dataset) {
         .enter()
         .append('p')
         .attr('class', function (d) {
-            var classes = ['flight-lim', 'limits-val'];
+            var classes = ['flight-lim', 'limits-val', 'small'];
             if (!d.scope) {  classes.push('unlimited-limit')  }
             return classes.join(' ');
         })
@@ -874,7 +874,7 @@ d3.json('avia_table.json', function(error, dataset) {
         .enter()
         .append('p')
         .attr('class', function (d) {
-            var classes = ['airline-lim', 'limits-val'];
+            var classes = ['airline-lim', 'limits-val small'];
             if (!d.scope) {
                 classes.push('unlimited-limit')
             }
