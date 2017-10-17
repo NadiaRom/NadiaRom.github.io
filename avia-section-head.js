@@ -28,10 +28,14 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     });
 
     function styleFunc(feature) {
+        var ifproject = 0;
+        if (feature.properties.encoutry !== 'Ukraine') {
+            ifproject = feature.properties.treaty_stage === 'проект' ? 0 : 0.04;
+        }
+
 
         return {
-            fillOpacity: 0.00001,
-            fill: '#000000',
+            fillOpacity: ifproject,
             color: '#56FB1C',
             weight: 0.3
         };
