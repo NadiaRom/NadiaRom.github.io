@@ -123,6 +123,14 @@ label.menu-airline {
   font-family: PT Mono, monospace !important;
 }
 
+i.fa-plane {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
 label.menu-airline i {
   color: #56fb1c;
 }
