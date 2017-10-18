@@ -127,8 +127,6 @@ a.leaflet-control-zoom-in:hover {
 
 .tooltip-inner {
   max-width: 62vmin;
-  padding: 0.33rem 0.33rem 33rem 0.33rem;
-  margin: 0;
   color: #d1d1d4;
   text-align: left;
   background-color: #4b4b4d;
