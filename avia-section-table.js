@@ -34,10 +34,13 @@ d3.json('avia_table.json', function(error, dataset) {
                 aname_new = 'AtlasGlobal UA';
                 break;
             case 'РОЗА ВІТРІВ':
-                aname_new = 'WindRose';
+                aname_new = 'Wind Rose';
                 break;
             case 'ДАРТ':
                 aname_new = 'DART';
+                break;
+            case 'Українсько-середземноморські авіалінії':
+                aname_new = 'UM Air';
                 break;
             default: aname_new = d;
         }
