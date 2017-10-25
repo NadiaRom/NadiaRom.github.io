@@ -28,7 +28,7 @@
      id="namedview60"
      showgrid="false"
      inkscape:zoom="0.97182579"
-     inkscape:cx="92.001423"
+     inkscape:cx="-106.59384"
      inkscape:cy="24.999997"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,56 +59,56 @@
        id="saau_top"
        transform="matrix(0.81648113,0,0,-0.8164865,209.48793,1063.8816)">
       <g
-         style="fill:#9f8df7;fill-opacity:1"
+         style="fill:#00a5ff;fill-opacity:1"
          id="g12217"
          transform="translate(-20.95618,0)">
         <g
-           style="fill:#9f8df7;fill-opacity:1"
+           style="fill:#00a5ff;fill-opacity:1"
            transform="translate(198.82488,196.92443)"
            id="g11345-9">
           <path
              id="path11347-2"
-             style="fill:#9f8df7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             style="fill:#00a5ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
              d="M 0,0 22.423,30.644 -2.6,30.644 -25.023,0 l 22.386,-30.594 25.023,0 L 0,0 Z"
              inkscape:connector-curvature="0" />
         </g>
         <g
-           style="fill:#9f8df7;fill-opacity:1"
+           style="fill:#00a5ff;fill-opacity:1"
            transform="translate(224.40249,196.92443)"
            id="g11349-0">
           <path
              id="path11351-6"
-             style="fill:#9f8df7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             style="fill:#00a5ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
              d="M 0,0 22.423,30.644 2.27,30.644 -20.154,0 2.233,-30.594 l 20.153,0 L 0,0 Z"
              inkscape:connector-curvature="0" />
         </g>
         <g
-           style="fill:#9f8df7;fill-opacity:1"
+           style="fill:#00a5ff;fill-opacity:1"
            transform="translate(249.88338,196.92443)"
            id="g11353-3">
           <path
              id="path11355-0"
-             style="fill:#9f8df7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             style="fill:#00a5ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
              d="m 0,0 22.423,30.644 -15.284,0 L -15.284,0 7.103,-30.594 l 15.283,0 L 0,0 Z"
              inkscape:connector-curvature="0" />
         </g>
         <g
-           style="fill:#9f8df7;fill-opacity:1"
+           style="fill:#00a5ff;fill-opacity:1"
            transform="translate(275.36239,196.92443)"
            id="g11357-7">
           <path
              id="path11359-0"
-             style="fill:#9f8df7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             style="fill:#00a5ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
              d="m 0,0 22.423,30.644 -10.414,0 L -10.414,0 l 22.386,-30.594 10.414,0 L 0,0 Z"
              inkscape:connector-curvature="0" />
         </g>
         <g
-           style="fill:#9f8df7;fill-opacity:1"
+           style="fill:#00a5ff;fill-opacity:1"
            transform="translate(301.12658,196.92443)"
            id="g11361-8">
           <path
              id="path11363-9"
-             style="fill:#9f8df7;fill-opacity:1;fill-rule:nonzero;stroke:none"
+             style="fill:#00a5ff;fill-opacity:1;fill-rule:nonzero;stroke:none"
              d="m 0,0 22.423,30.644 -5.544,0 L -5.544,0 l 22.386,-30.594 5.544,0 L 0,0 Z"
              inkscape:connector-curvature="0" />
         </g>

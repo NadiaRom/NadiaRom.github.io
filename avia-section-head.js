@@ -14,13 +14,13 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     map.getPane('labels').style.zIndex = 450;
     map.getPane('labels').style.pointerEvents = 'none';
 
-    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png', {
+    var CartoDB_PositronNoLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_nolabels/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
         subdomains: 'abcd',
         maxZoom: 8
     });
 
-    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_only_labels/{z}/{x}/{y}.png', {
+    var CartoDB_PositronOnlyLabels = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_only_labels/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
         subdomains: 'abcd',
         pane: 'labels',
@@ -36,8 +36,8 @@ d3.json('country_treaties.geojson', function (error, geojson) {
 
         return {
             fillOpacity: ifproject,
-            color: '#56FB1C',
-            weight: 0.3
+            color: '#00a5ff',
+            weight: 0.4
         };
     }
 
@@ -45,13 +45,12 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     function moveToCountry() {
         if (this.feature.properties.encountry !== 'Russia') {
             // click to expand country card
+            // $('body').scrollTo($('nav#table-header'), {
+            //     duration: 440
+            // });
             $('div#' + this.feature.properties.encountry)
                 .find('.uncollapse-card a i')
                 .click();
-
-            $('body').scrollTo($('nav#table-header'), {
-                duration: 440
-            });
 
             $('.typeahead').typeahead('val', '');
         }

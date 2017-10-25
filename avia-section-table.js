@@ -207,6 +207,13 @@ d3.json('avia_table.json', function(error, dataset) {
     $('input.airline-checkbox').change(function () {
         $('.card-open .collapse').collapse('hide');
 
+        $(document).ready(function () {
+            $('body').scrollTo($('nav#table-header'), {
+                offset: -$('nav#table-header').height() - 30,
+                duration: 0
+            });
+        });
+
         // Get ICAO & IATA codes of checked airline in airline_data
         var airline_id = this.parentNode.__data__.icao_iata;
         // get index of selected airline in iarline_data
@@ -266,7 +273,7 @@ d3.json('avia_table.json', function(error, dataset) {
         // update values in total
         $('.country-profile-row').each(function () {
             if (typeof airline_id === 'object') {
-                $(this).show();
+                $(this).slideDown(750);
             } else {
                 var selected_fly = this.__data__.conditions.some(function (c) {
                     return c.permissions.some(function (p) {
@@ -278,7 +285,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 if (!selected_fly) {
                     $(this).hide();
                 } else {
-                    $(this).show();
+                    $(this).slideDown(750);
                 }
             }
         });
@@ -324,6 +331,7 @@ d3.json('avia_table.json', function(error, dataset) {
                 });
 
         });
+
         $('div.country-profile-row:visible').sort(function (a, b) {
             return d3.descending(
                 $(a).find('.country-total').get(0).__data__[0],
@@ -333,12 +341,6 @@ d3.json('avia_table.json', function(error, dataset) {
 
         d3.selectAll('div.permission').remove();
         drawPermissions();
-        $(document).ready(function () {
-            $('body').scrollTo($('#table-body'), {
-                offset: -$('nav#table-header').height() - 30,
-                duration: 0
-            });
-        });
 
         // if all airlines selected - button blank, if not - button classed 'filtered-out'
         if (airlines_data.some(function (a) {
@@ -490,7 +492,7 @@ d3.json('avia_table.json', function(error, dataset) {
                     $(a).find('.country-total').get(0).__data__[0],
                     $(b).find('.country-total').get(0).__data__[0]
                 );
-            }).show().appendTo('#table-body').hide().slideDown(750);
+            }).hide().appendTo('#table-body').slideDown(750);
 
             countryWidthRegular = $('#'+ maxWidthCountryName.encoutry + ' .country-name').width();
             $('.country-name').animate({
