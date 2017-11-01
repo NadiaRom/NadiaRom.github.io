@@ -5,8 +5,8 @@
 //$barcol: #56fb1c;
 //$headcol: #9f8df7;
 $bodyfontcol: #242426;
-$bgcol: #f5f5f3;
-$bodyelcolor: #a1a1a4;
+$bgcol: #f4f4f2;
+$bodyelcolor: #b9b9bc;
 $secondtext: #4b4b4d;
 $barcol: #00a5ff;
 $headcol: #00a5ff;
@@ -14,8 +14,16 @@ $radarfont: PT Mono, monospace;
 $textfont: Open Sans, sans-serif;
 $letterspace: 0.04em;
 
-:root {
-  font-size: 110%;
+@media (max-width: 767px) {
+  :root {
+    font-size: 90%;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    font-size: 110%;
+  }
 }
 
 body {
@@ -158,16 +166,19 @@ a.leaflet-control-zoom-in:hover {
 }
 
 .tooltip-inner {
+
   max-width: 62vmin;
   color: $bodyfontcol;
   text-align: left;
-  background-color: $bodyelcolor;
+  background-color: $bgcol;
   border-radius: 0;
   border: none;
+  box-shadow: 1px 1px 1px 1px $bodyelcolor;
   font-family: $radarfont !important;
 
   .flight-codes {
     color: $barcol;
+    font-weight: 600;
   }
 
 }
@@ -404,6 +415,13 @@ p.limit-heading {
   font-style: italic;
 }
 
+#disclaimer-promo {
+  background-color: #ffffff;
+  #partners img {
+    max-height: 7rem;
+  }
+}
+
 #footer {
   z-index: 4500;
   bottom: 0;
@@ -413,7 +431,7 @@ p.limit-heading {
   font-size: 14px;
   padding: 1.5rem;
   display: block;
-  margin-top: 50px;
+  margin: 0;
 }
 
 #footer h4 {
@@ -429,6 +447,7 @@ p.limit-heading {
 }
 
 @media (max-width: 767px) {
+
   .country-total p {
     font-size: 0.7rem;
   }

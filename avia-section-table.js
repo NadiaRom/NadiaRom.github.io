@@ -457,6 +457,15 @@ d3.json('avia_table.json', function(error, dataset) {
             .attr('class', 'col country-total mt-1');
 
         var countryTotal = countryTotalDiv.filter(function (d) {  return d[0] > 0;  })
+            .append('a')
+            .attr('data-toggle', 'collapse')
+            .attr('href', function (d) {
+                return '#collapse-card' + $(this).closest('.country-profile-row').get(0).__data__.encoutry;
+            })
+            .attr('aria-expanded', 'false')
+            .attr('aria-controls', function (d) {
+                return 'collapse-card' + $(this).closest('.country-profile-row').get(0).__data__.encoutry;
+            })
             .append('svg')
             .attr('width', '100%')
             .attr('height', '1em');
@@ -805,10 +814,10 @@ d3.json('avia_table.json', function(error, dataset) {
         });
 
     var routes = treatyTableRow.append('div')
-        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 country-routes-diagram');
+        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 mb-sm-0 mb-4 country-routes-diagram');
 
     var treatyFlightLimits = treatyTableRow.append('div')
-        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 treaty-flight-limits');
+        .attr('class', 'col-md-3 col-sm-4 col-12 mr-5 mb-sm-0 mb-4 treaty-flight-limits');
 
     var treatyAirlineLimits = treatyTableRow.append('div')
         .attr('class', 'col-md-4 col-sm-4 col-12 treaty-airline-limits');

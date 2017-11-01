@@ -1,11 +1,17 @@
-:root {
-  font-size: 110%;
+@media (max-width: 767px) {
+  :root {
+    font-size: 90%;
+  }
 }
-
+@media (min-width: 768px) {
+  :root {
+    font-size: 110%;
+  }
+}
 body, section#title-lead h2, section#title-lead p, button#dropdownMenuButton, .dropdown-menu, input#country-input {
   font-family: Open Sans, sans-serif;
   color: #242426;
-  background-color: #f5f5f3;
+  background-color: #f4f4f2;
   letter-spacing: 0.04em;
 }
 
@@ -15,7 +21,7 @@ div#logo-buttons {
   right: 0;
   bottom: -1px;
   left: 0;
-  background-color: #f5f5f3;
+  background-color: #f4f4f2;
 }
 
 @media (max-width: 767px) {
@@ -84,9 +90,9 @@ section#title-lead h2, section#title-lead p {
 }
 
 a.leaflet-control-zoom-in, a.leaflet-control-zoom-out {
-  background-color: #f5f5f3;
+  background-color: #f4f4f2;
   border-radius: 0 !important;
-  border: 1px solid #a1a1a4 !important;
+  border: 1px solid #b9b9bc !important;
   margin: 0;
   color: #242426;
 }
@@ -107,7 +113,7 @@ a.leaflet-control-zoom-in {
 }
 
 a.leaflet-control-zoom-in:hover, a.leaflet-control-zoom-out:hover {
-  background-color: #a1a1a4;
+  background-color: #b9b9bc;
   border-radius: 0 !important;
   margin: 0;
   color: #242426;
@@ -118,7 +124,7 @@ a.leaflet-control-zoom-in:hover {
 }
 
 .leaflet-control-attribution {
-  background-color: #f5f5f3 !important;
+  background-color: #f4f4f2 !important;
   color: #242426;
   font-family: PT Mono, monospace;
   border: 0px;
@@ -137,13 +143,15 @@ a.leaflet-control-zoom-in:hover {
   max-width: 62vmin;
   color: #242426;
   text-align: left;
-  background-color: #a1a1a4;
+  background-color: #f4f4f2;
   border-radius: 0;
   border: none;
+  box-shadow: 1px 1px 1px 1px #b9b9bc;
   font-family: PT Mono, monospace !important;
 }
 .tooltip-inner .flight-codes {
   color: #00a5ff;
+  font-weight: 600;
 }
 
 nav#table-header {
@@ -151,8 +159,8 @@ nav#table-header {
   position: -webkit-sticky !important;
   top: -1px;
   z-index: 4200 !important;
-  background-color: #f5f5f3;
-  border-bottom: solid #a1a1a4 0.22px;
+  background-color: #f4f4f2;
+  border-bottom: solid #b9b9bc 0.22px;
 }
 
 button#dropdownMenuButton {
@@ -165,7 +173,7 @@ button#dropdownMenuButton {
 .dropdown-menu {
   border: none;
   border-radius: 0;
-  background-color: #f5f5f3;
+  background-color: #f4f4f2;
   font-family: PT Mono, monospace !important;
 }
 
@@ -173,7 +181,7 @@ label.menu-airline {
   color: #242426;
   display: block;
   padding: 0.25em;
-  border: solid #a1a1a4 0.22px;
+  border: solid #b9b9bc 0.22px;
   font-family: PT Mono, monospace !important;
 }
 
@@ -287,7 +295,7 @@ rect.flight {
 }
 
 div.already-viewed {
-  background-color: #eeeeeb;
+  background-color: #ededea;
 }
 
 div.card-open {
@@ -295,7 +303,7 @@ div.card-open {
 }
 
 div.collapse {
-  background-color: #f5f5f3;
+  background-color: #f4f4f2;
 }
 
 .permissions-heading, .treaty-heading {
@@ -328,7 +336,7 @@ div.permission .airlines-axis-y text {
   font-size: 0.7em;
 }
 div.permission .airlines-axis-y text.no-flights-airline-lab {
-  fill: #a1a1a4;
+  fill: #b9b9bc;
 }
 div.permission text.flights-per-week-lab {
   font-style: italic;
@@ -360,6 +368,13 @@ p.limit-heading {
   font-style: italic;
 }
 
+#disclaimer-promo {
+  background-color: #ffffff;
+}
+#disclaimer-promo #partners img {
+  max-height: 7rem;
+}
+
 #footer {
   z-index: 4500;
   bottom: 0;
@@ -369,18 +384,18 @@ p.limit-heading {
   font-size: 14px;
   padding: 1.5rem;
   display: block;
-  margin-top: 50px;
+  margin: 0;
 }
 
 #footer h4 {
   font-size: 18px;
-  color: #f5f5f3;
+  color: #f4f4f2;
 }
 
 #footer a {
   text-decoration: none;
   font-size: 0.7em;
-  color: #f5f5f3;
+  color: #f4f4f2;
 }
 
 @media (max-width: 767px) {
@@ -400,18 +415,18 @@ p.limit-heading {
   padding-top: 20px;
   font-size: 0.7em;
   line-height: 1rem;
-  color: #a1a1a4;
+  color: #b9b9bc;
 }
 
 #thank-you-d3 {
   padding-top: 20px;
-  color: #a1a1a4;
+  color: #b9b9bc;
   font-size: 0.7em;
   line-height: 1rem;
 }
 #thank-you-d3 a {
   text-decoration: none;
-  color: #a1a1a4;
+  color: #b9b9bc;
   font-size: 1em !important;
 }
 #thank-you-d3 a i {
