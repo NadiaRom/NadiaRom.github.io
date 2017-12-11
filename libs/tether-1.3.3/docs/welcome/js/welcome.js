@@ -1,5 +1,5 @@
 (function() {
-  var init, isMobile, setupBrowserDemo, setupHero, _Drop;
+  var _Drop, init, isMobile, setupBrowserDemo, setupHero;
 
   _Drop = Drop.createContext({
     classPrefix: 'tether'
@@ -13,15 +13,15 @@
   };
 
   setupHero = function() {
-    var $target, finalDropState, frameLengthMS, frames, openAllDrops, openIndex, openNextDrop, position, positions, _i, _len;
+    var $target, finalDropState, frameLengthMS, frames, j, len, openAllDrops, openIndex, openNextDrop, position, positions;
     $target = $('.tether-target-demo');
     positions = ['top left', 'left top', 'left middle', 'left bottom', 'bottom left', 'bottom center', 'bottom right', 'right bottom', 'right middle', 'right top', 'top right', 'top center'];
     if (isMobile) {
       positions = ['top left', 'bottom left', 'bottom right', 'top right'];
     }
     window.drops = {};
-    for (_i = 0, _len = positions.length; _i < _len; _i++) {
-      position = positions[_i];
+    for (j = 0, len = positions.length; j < len; j++) {
+      position = positions[j];
       drops[position] = new _Drop({
         target: $target[0],
         classes: 'tether-theme-arrows-dark',
@@ -35,13 +35,13 @@
     frames = 0;
     frameLengthMS = 10;
     openAllDrops = function() {
-      var drop, _results;
-      _results = [];
+      var drop, results;
+      results = [];
       for (position in drops) {
         drop = drops[position];
-        _results.push(drop.open());
+        results.push(drop.open());
       }
-      return _results;
+      return results;
     };
     openNextDrop = function() {
       var drop;
@@ -114,7 +114,7 @@
       iframeWindow = $iframe[0].contentWindow;
       $items = $iframe.contents().find('.item');
       return $items.each(function(i) {
-        var $item, drop, _iframeWindowDrop;
+        var $item, _iframeWindowDrop, drop;
         $item = $(this);
         _iframeWindowDrop = iframeWindow.Drop.createContext({
           classPrefix: 'tether'

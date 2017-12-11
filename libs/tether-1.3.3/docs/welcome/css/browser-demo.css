@@ -4,8 +4,7 @@ html, body {
   font-family: "proxima-nova", sans-serif; }
 
 .tether.tether-theme-arrows-dark .tether-content {
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
   background: #000; }
   .tether.tether-theme-arrows-dark .tether-content ul {
     color: #fff;
@@ -84,3 +83,5 @@ html, body {
       width: 14px; }
     .browser-demo .word:nth-last-child(9n+1) {
       width: 80px; }
+
+/*# sourceMappingURL=browser-demo.css.map */

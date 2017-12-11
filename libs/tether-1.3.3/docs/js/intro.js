@@ -56,7 +56,7 @@
         return $output.addClass('scrolled');
       });
     });
-    $scrollBox.css('height', "" + ($block.parent().outerHeight()) + "px");
+    $scrollBox.css('height', ($block.parent().outerHeight()) + "px");
     if ($output.attr('deactivated') == null) {
       return run($block);
     }
@@ -98,14 +98,14 @@
   };
 
   init = function() {
-    var $blocks, block, _i, _len, _results;
+    var $blocks, block, i, len, results;
     $blocks = $('code[data-example]');
-    _results = [];
-    for (_i = 0, _len = $blocks.length; _i < _len; _i++) {
-      block = $blocks[_i];
-      _results.push(setupBlock($(block)));
+    results = [];
+    for (i = 0, len = $blocks.length; i < len; i++) {
+      block = $blocks[i];
+      results.push(setupBlock($(block)));
     }
-    return _results;
+    return results;
   };
 
   window.EXECUTR_OPTIONS = {
