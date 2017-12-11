@@ -84,6 +84,19 @@ section#title-lead h2, section#title-lead p {
   font-weight: normal;
 }
 
+canvas {
+  background: #c1dbff;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(#c1dbff, white);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#c1dbff, white);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#c1dbff, white);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#c1dbff, white);
+  /* Standard syntax */
+}
+
 .text-link {
   color: #242426 !important;
   border-bottom: 1.5px dotted #b9b9bc;
@@ -175,6 +188,20 @@ nav#table-header {
   z-index: 4200 !important;
   background-color: #f4f4f2;
   border-bottom: solid #b9b9bc 0.22px;
+}
+
+#back-to-map {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0 !important;
+}
+#back-to-map i {
+  color: #00a5ff !important;
+}
+
+#back-to-map.view {
+  display: block;
 }
 
 button#dropdownMenuButton {

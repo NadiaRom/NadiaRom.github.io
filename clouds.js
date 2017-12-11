@@ -25,7 +25,7 @@ function init() {
 
     var context = canvas.getContext( '2d' );
 
-    context.fillStyle = '#f4f4f2';
+    // context.fillStyle = '#f4f4f2';
     context.fillRect(0, 0, canvas.width, canvas.height);
 
     //
@@ -38,10 +38,10 @@ function init() {
     geometry = new THREE.Geometry();
 
     var texture = THREE.ImageUtils.loadTexture( 'img/cloud10.png', null, animate );
-    // texture.magFilter = THREE.LinearMipMapLinearFilter;
-    // texture.minFilter = THREE.LinearMipMapLinearFilter;
+    texture.magFilter = THREE.NearestFilter;
+    texture.minFilter = THREE.LinearMipMapLinearFilter;
 
-    var fog = new THREE.Fog( 0xf4f4f2, -50, 3000 );
+    var fog = new THREE.Fog( 0xffffff, -50, 3000 );
     material = new THREE.ShaderMaterial( {
 
         uniforms: {

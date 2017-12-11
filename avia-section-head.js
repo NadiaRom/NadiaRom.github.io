@@ -30,7 +30,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     function styleFunc(feature) {
         var ifproject = 0;
         if ( feature.properties.encountry !== 'UKR' && feature.properties.encountry !== 'RUS' && feature.properties.treaty_stage !== 'проект' ) {
-            ifproject = feature.properties.is_open === '1' ? 0.21 : 0.07;
+            ifproject = feature.properties.is_open === '1' ? 0.25 : 0.07;
             }
 
         return {
