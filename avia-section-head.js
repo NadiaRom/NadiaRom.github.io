@@ -29,10 +29,9 @@ d3.json('country_treaties.geojson', function (error, geojson) {
 
     function styleFunc(feature) {
         var ifproject = 0;
-        if (feature.properties.encoutry !== 'Ukraine') {
-            ifproject = feature.properties.treaty_stage === 'проект' ? 0 : 0.08;
-        }
-
+        if ( feature.properties.encountry !== 'UKR' && feature.properties.encountry !== 'RUS' && feature.properties.treaty_stage !== 'проект' ) {
+            ifproject = feature.properties.is_open === '1' ? 0.21 : 0.07;
+            }
 
         return {
             fillOpacity: ifproject,
@@ -43,7 +42,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
 
 
     function moveToCountry() {
-        if (this.feature.properties.encountry !== 'Russia') {
+        if (this.feature.properties.encountry !== 'RUS') {
             // click to expand country card
             // $('body').scrollTo($('nav#table-header'), {
             //     duration: 440
@@ -61,7 +60,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     }
 
     var jsonForeignLayer = L.geoJSON(geojson, {
-        filter: function (feature) {  return feature.properties.encountry != 'Ukraine';  },
+        filter: function (feature) {  return feature.properties.encountry != 'UKR';  },
         style: styleFunc,
         onEachFeature: onEachFeature
     });
@@ -98,7 +97,8 @@ d3.tsv(updateInfoUrl, function (error, info) {
     info = info[0];
     d3.select('#update-info')
         .html(
-            '<p class="mb-0 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
-            'Маємо розклади ' + info.schedules_ac + '<br/>' + ' від ' + info.schedules_update + '</p>'
+            '<p class="mb-1 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
+            'Маємо розклади ' + info.schedules_ac + '<br/>' + ' від ' + info.schedules_update + '</p>' +
+            '<p class="ml-1 mb-0">Рейси за код-шерінгом не враховуються.</p>'
         );
 });

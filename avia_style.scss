@@ -110,6 +110,18 @@ section#title-lead {
 
 }
 
+.text-link {
+  color: $bodyfontcol !important;
+  border-bottom: 1.5px dotted $bodyelcolor;
+  text-decoration: none !important;
+  //text-decoration: underline dotted $bodyelcolor;
+}
+
+.text-link:hover {
+  border-bottom: 1.5px dotted $barcol;
+
+}
+
 #map {
   width: 100%;
   height: 62vmin;
@@ -170,7 +182,7 @@ a.leaflet-control-zoom-in:hover {
   max-width: 62vmin;
   color: $bodyfontcol;
   text-align: left;
-  background-color: $bgcol;
+  background-color: darken($bgcol, 3%);
   border-radius: 0;
   border: none;
   box-shadow: 1px 1px 1px 1px $bodyelcolor;
@@ -179,6 +191,10 @@ a.leaflet-control-zoom-in:hover {
   .flight-codes {
     color: $barcol;
     font-weight: 600;
+  }
+  span.open_sky_map {
+    color: $barcol;
+    font-weight: 400;
   }
 
 }
@@ -321,6 +337,14 @@ rect.flight {
   alignment-baseline: hanging;
 }
 
+.open_sky_badge {
+  font-weight: 200;
+  background-color: white;
+  color: $bodyfontcol;
+  font-size: 0.8em;
+  border: 1px dotted $barcol;
+}
+
 .uncollapse-card i {
   color: $headcol;
   font-size: 0.9rem;
@@ -389,6 +413,15 @@ div.permission {
     font-size: 0.5rem;
     fill: $secondtext;
   }
+}
+
+.is_occupied {
+  .route-header {
+    //color: lighten($bodyfontcol, 15%);
+    text-decoration: underline dotted $headcol;
+  }
+
+
 }
 
 div.treaty-table-col-main {

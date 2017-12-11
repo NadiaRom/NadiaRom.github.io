@@ -483,17 +483,28 @@ d3.json('avia_table.json', function(error, dataset) {
             })
             .attr('class', function (d, i) {
                 var classes = ['total-country-frequency'];
-                i > 0 ? classes.push('flight') : classes.push('permission')
+                i > 0 ? classes.push('flight') : classes.push('permission');
                 return classes.join(' ');
             });
 
+        var openSkyBadge = '<span class="badge badge-pill badge-default ml-2 open_sky_badge">Відкрите небо</span>';
+
         var countryTotalLab = countryTotalDiv.append('p')
             .attr('class', 'country-total-lab small mb-0')
-            .text(function (d) {
+            .html(function (d) {
+                var badge = $(this).closest('.country-profile-row').get(0).__data__.is_open === '1'
+                    ? openSkyBadge : '';
                 return d[1] > 0
-                    ? d[1] + ' за розкладами / видано прав на ' + d[0] + ' р/т'
-                    : 'видано прав на ' + d[0] + ' р/т';
+                    ? d[1] + ' за розкладами / видано прав на ' + d[0] +
+                    ' <span title="рейсів на тиждень" data-toggle="tooltip" data-placement="bottom">р/т</span> ' +
+                    badge
+                    : 'видано прав на ' + d[0] +
+                    ' <span title="рейсів на тиждень" data-toggle="tooltip" data-placement="bottom">р/т</span> ' +
+                    badge;
             });
+        $(function () {
+            $('.country-total-lab [data-toggle="tooltip"]').tooltip()
+        })
 
         $(document).ready( function () {
             $('div.country-profile-row').sort(function (a, b) {
@@ -651,7 +662,11 @@ d3.json('avia_table.json', function(error, dataset) {
             })
             .enter()
             .append('div')
-            .attr('class', 'col-lg-3 col-md-4 col-sm-6 col-8 mb-3 permission')
+            .attr('class', function (d) {
+                var classes = ['col-lg-3', 'col-md-4', 'col-sm-6', 'col-8', 'mb-3', 'permission'];
+                if ( d.is_occupied === 1 ) {  classes.push('is_occupied');  }
+                return classes.join(' ');
+            } )
             .attr('id', function (d) {
                 return d.from_encity.replace(/[\.\s]/gi, '') + '__' + d.to_encity.replace(/[\.\s]/gi, '');
             });
@@ -660,6 +675,15 @@ d3.json('avia_table.json', function(error, dataset) {
         var routeHeaders = permissionDivs.append('div')
             .attr('class', 'route-header small pb-1')
             .html(function (d) {  return '<span>' + d.from_city + ' – ' + d.to_city + '</span>';  });
+
+        routeHeaders.filter(function (d) {  return d.is_occupied === 1;  })
+            .attr('title', 'Не залишилось вільних частот')
+            .attr('data-toggle', 'occupied_tooltip')
+            .attr('data-placement', 'bottom');
+
+        $(function () {
+            $('[data-toggle="occupied_tooltip"]').tooltip()
+        });
 
         // fix shity long route names: Abracadabra-Smthland - Dgsgsgffdfhdhdrydrgrh
         routeHeaders.filter(function () {
