@@ -504,7 +504,7 @@ d3.json('avia_table.json', function(error, dataset) {
             });
         $(function () {
             $('.country-total-lab [data-toggle="tooltip"]').tooltip()
-        })
+        });
 
         $(document).ready( function () {
             $('div.country-profile-row').sort(function (a, b) {
