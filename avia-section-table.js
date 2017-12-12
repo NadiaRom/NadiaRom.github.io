@@ -521,7 +521,7 @@ d3.json('avia_table.json', function(error, dataset) {
         });
 
         var uncollapseCard = countryRows.append('div')
-            .attr('class', 'col-1 uncollapse-card p-0 m-0 text-center')
+            .attr('class', 'col-1 uncollapse-card p-0 mt-0 ml-0 mr-3 mb-0 text-center')
             .attr('id', function (d) {
                 return 'collapse-' + d.encoutry;
             })
@@ -663,7 +663,7 @@ d3.json('avia_table.json', function(error, dataset) {
             .enter()
             .append('div')
             .attr('class', function (d) {
-                var classes = ['col-lg-3', 'col-md-4', 'col-sm-6', 'col-8', 'mb-3', 'permission'];
+                var classes = ['col-lg-3', 'col-md-4', 'col-sm-6', 'col-8', 'mb-3', 'ml-2', 'permission'];
                 if ( d.is_occupied === 1 ) {  classes.push('is_occupied');  }
                 return classes.join(' ');
             } )
