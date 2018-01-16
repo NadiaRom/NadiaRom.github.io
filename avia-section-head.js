@@ -91,7 +91,7 @@ d3.json('country_treaties.geojson', function (error, geojson) {
     CartoDB_PositronNoLabels.addTo(map);
 
 });
-var updateInfoUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTPQDtGQN16XDQOnHhUhxo9KOMixJbbwBnERuDKysCe3ucMzgxS4Rs61w2aLQvFA8isPJ4b86I0P4e-/pub?gid=670069218&single=true&output=tsv';
+var updateInfoUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSUfAt4ZxkF1mYvEOEvQ-2tPoewRUjwkXiLNBuQDa-VgfhacBNnewj_1mBxgqyKb4oKPb6vB8E-RooI/pub?gid=1663421102&single=true&output=tsv';
 d3.tsv(updateInfoUrl, function (error, info) {
     if (error) {  throw error;  }
     info = info[0];
