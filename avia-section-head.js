@@ -99,6 +99,6 @@ d3.tsv(updateInfoUrl, function (error, info) {
         .html(
             '<p class="mb-1 ml-1">Дані оновлено ' + info.data_update + '<br/>' +
             'Маємо розклади ' + info.schedules_ac + '<br/>' + ' від ' + info.schedules_update + '</p>' +
-            '<p class="ml-1 mb-0">Рейси за код-шерінгом не враховуються.</p>'
+            '<p class="ml-1 mb-0">Рейси за код-шерінгом, а також чартерні, не враховуються.</p>'
         );
 });
